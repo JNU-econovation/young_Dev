@@ -28,6 +28,7 @@ a:hover {
   text-decoration: none;
   color:#808080;
 }
+
 /* navigation bar */
 
 .navbar-brand {
@@ -55,12 +56,13 @@ a:hover {
 
 /* title image */
 .title-image{
-  /* background-image: url(images/bg-mastgead.jpg); */
+  background-image: url(public/images/bg-masthead.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color:#000000;
+  /* background-color:#000000; */
+  width: 100%;
 }
 
 /* features section*/
@@ -134,14 +136,14 @@ h2 {
 padding:3% 15%;
 }
 
-/* pricing=>tutors Section */
+/* pricing Section */
 
-#tutors{
+#pricing{
   padding : 100px;
   text-align: center;
 }
 
-.tutors-column{
+.pricing-column{
   padding : 3% 2%;
   padding-top : 50px;
 }

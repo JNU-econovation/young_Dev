@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
-const path = require('path')
+// const path = require('path')
 const app = express();
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -26,6 +26,14 @@ app.use( express.static('public'))
 app.use(cors());
 app.get('/', (req, res) => {
     res.render('index')
+});
+
+app.get('/tutors', (req, res) => {
+    res.render('tutors')
+});
+
+app.get('/songs', (req, res) => {
+    res.render('songs')
 });
 
 app.get('/lectures/add', (req, res) => {
