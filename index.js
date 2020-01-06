@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
-
+// const path = require('path')
 const app = express();
-
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
+app.set("view options", { layout: false } );
 const SELECET_ALL_PRODUCTS_QUERY = 'SELECT * FROM lecture_videos';
 
 const connection = mysql.createConnection({
@@ -20,11 +22,18 @@ connection.connect(err => {
         console.log('Connected to the MySQL server');
     }
 });
-
+app.use( express.static('public'))
 app.use(cors());
-
 app.get('/', (req, res) => {
-    res.send('go to /lectures to see lecture videos')
+    res.render('index')
+});
+
+app.get('/tutors', (req, res) => {
+    res.render('tutors')
+});
+
+app.get('/songs', (req, res) => {
+    res.render('songs')
 });
 
 app.get('/lectures/add', (req, res) => {
