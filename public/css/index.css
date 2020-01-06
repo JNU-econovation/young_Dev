@@ -3,39 +3,44 @@
   color: #fff;
 }
 
-.container-fluid{
+.container-fluid {
   padding: 3% 15% 7%;
 }
 
-
 h1 {
-  font-family : "montserrat";
-  font-weight : 900;
-  font-size : 3.5rem;
-  line-Height : 1.5;
+  font-family: "montserrat";
+  font-weight: 900;
+  font-size: 3.5rem;
+  line-height: 1.5;
 }
 
-body{
-  font-family : "montserrat";
+body {
+  font-family: "montserrat";
 }
 
 a {
-  text-decoration : none;
-  color:#000000;
+  text-decoration: none;
 }
 
+a.black {
+  color: #000000;
+}
+
+a.white {
+  color: #ffffff;
+}
 a:hover {
   text-decoration: none;
-  color:#808080;
+  color: #808080;
 }
 /* navigation bar */
 
 .navbar-brand {
-  font-family : Ubuntu;
-  font-size : 2.5rem;
+  font-family: Ubuntu;
+  font-size: 2.5rem;
 }
 
-.navbar{
+.navbar {
   padding: 0 0 4.5rem;
 }
 
@@ -44,66 +49,65 @@ a:hover {
 }
 
 .nav-link {
-  font-size : 1.2rem;
+  font-size: 1.2rem;
   font-family: "montserrat-light";
 }
 
 /* download buttons */
-.download-button{
-  margin : 5% 3% 5% 0%
+.download-button {
+  margin: 5% 3% 5% 0%;
 }
 
 /* title image */
-.title-image{
+.title-image {
   /* background-image: url(images/bg-mastgead.jpg); */
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color:#000000;
+  background-color: #000000;
 }
 
 /* features section*/
 
 h3 {
-font-family : "montserrat";
-font-weight : 900;
-font-size : 1.3rem;
+  font-family: "montserrat";
+  font-weight: 900;
+  font-size: 1.3rem;
 }
 
-p{
+p {
   color: #8f8f8f;
 }
 
-#features{
+#features {
   background-color: #fff;
   padding: 7% 15%;
-  position:relative;
+  position: relative;
   z-index: 1;
 }
 
-.feature-box{
-  text-align : center;
-  padding : 5%;
+.feature-box {
+  text-align: center;
+  padding: 5%;
 }
 
-.icon{
+.icon {
   color: #000000;
   margin-bottom: 1rem;
 }
 
 .icon:hover {
-color: #808080;
+  color: #808080;
 }
 
 /* testimonials */
 
-#testimonials{
+#testimonials {
   padding: 7% 10%;
   text-align: center;
   background-color: #000000;
-  color : #ffffff;
-
+  color: #ffffff;
 }
 
 h2 {
@@ -113,45 +117,56 @@ h2 {
   line-height: 1.5;
 }
 
-.testimonial-image{
+.testimonial-image {
   width: 10%;
   border-radius: 100%;
   margin: 20px;
 }
 
-#press{
+#press {
   background-color: #000000;
-  text-align:center;
+  text-align: center;
   padding-bottom: 3%;
 }
 
-.press-log{
+.press-log {
   width: 15%;
   margin: 20px 20px 50px;
 }
 
-.carousel-item{
-padding:3% 15%;
+.carousel-item {
+  padding: 3% 15%;
 }
 
 /* pricing=>tutors Section */
 
-#tutors{
-  padding : 100px;
+#tutors {
+  padding: 100px;
   text-align: center;
 }
 
-.tutors-column{
-  padding : 3% 2%;
-  padding-top : 50px;
+.tutors-column {
+  padding: 3% 2%;
+  padding-top: 50px;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
 }
 
 /* songs */
-#songs{
-  padding : 100px;
+#songs {
+  padding: 7% 10%;
   text-align: center;
+  background-color: #000000;
+  color: #ffffff;
 }
-.songs-column{
-  padding : 3% 2%;
-  padding-top : 50px;
+.songs-column {
+  padding: 3% 2%;
+  padding-top: 50px;
+}
+.container {
+  padding-top: 100px;
 }
