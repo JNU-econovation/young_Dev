@@ -22,7 +22,7 @@ connection.connect(err => {
         console.log('Connected to the MySQL server');
     }
 });
-app.use( express.static('public'))
+app.use(express.static('public'));
 app.use(cors());
 app.get('/', (req, res) => {
     res.render('index')
