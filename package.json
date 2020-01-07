@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/JNU-econovation/young_Dev#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "google-auth-library": "^5.8.0",
     "mysql": "^2.17.1"
   }
 }
