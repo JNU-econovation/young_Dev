@@ -4243,6 +4243,9 @@ input[type="button"].btn-block {
 .nav-link:hover, .nav-link:focus {
   text-decoration: none;
 }
+.fa-user-circle:hover, .fa-user-circle:focus{
+  text-decoration: none;
+}
 
 .nav-link.disabled {
   color: #6c757d;
@@ -4392,6 +4395,7 @@ input[type="button"].btn-block {
   -ms-flex-align: center;
   align-items: center;
 }
+
 
 .navbar-toggler {
   padding: 0.25rem 0.75rem;

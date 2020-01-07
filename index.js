@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql');
+// const mysql = require('mysql');
 // const path = require('path')
 const app = express();
 app.set("view engine", "ejs");
@@ -8,20 +8,20 @@ app.set("views", __dirname + "/views");
 app.set("view options", { layout: false } );
 const SELECET_ALL_PRODUCTS_QUERY = 'SELECT * FROM lecture_videos';
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '@jinjub98',
-    database: 'piano_tutoring'
-});
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '@jinjub98',
+//     database: 'piano_tutoring'
+// });
 
-connection.connect(err => {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log('Connected to the MySQL server');
-    }
-});
+// connection.connect(err => {
+//     if(err) {
+//         console.log(err);
+//     } else {
+//         console.log('Connected to the MySQL server');
+//     }
+// });
 app.use(express.static('public'));
 app.use(cors());
 app.get('/', (req, res) => {

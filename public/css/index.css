@@ -52,6 +52,13 @@ a:hover {
   font-size: 1.2rem;
   font-family: "montserrat-light";
 }
+.login-button {
+  color : #808080;
+}
+
+.login-button:hover {
+  color : #ffffff;
+}
 
 /* download buttons */
 .download-button {
