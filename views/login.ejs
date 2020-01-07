@@ -31,7 +31,7 @@
             user_name: profile.getName()
           })
           .then(function(result) {
-            if (result.status === 200) alert("성공");
+            if (result.status === 200) window.location.href = "/";
           })
           .catch(function(error) {
             alert(error.message);

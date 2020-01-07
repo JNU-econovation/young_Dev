@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
@@ -75,14 +76,24 @@ app.post("/hello", (req, res) => {
   var user_email = req.body.user_email;
   var user_name = req.body.user_name;
   console.log(`user email: ${user_email}\n user name: ${user_name}`);
+  const FIND_USER_QUERY = `SELECT user_email from user WHERE user_email='${user_email}'`;
   const INSERT_USER_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${user_email}', '${user_name}')`;
-  connection.query(INSERT_USER_QUERY, (err, results) => {
-    if (err) {
-      console.log(err);
-      return res.status(404).send(err);
-    } else {
+  connection.query(FIND_USER_QUERY, (err, results) => {
+    console.log(results);
+    if (results) {
       return res.status(200).json({
         userdata: results
+      });
+    } else {
+      connection.query(INSERT_USER_QUERY, (err, results) => {
+        if (err) {
+          console.log(err);
+          return res.status(404).send(err);
+        } else {
+          return res.status(200).json({
+            userdata: results
+          });
+        }
       });
     }
   });
