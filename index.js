@@ -26,7 +26,6 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
-const SELECET_ALL_PRODUCTS_QUERY = "SELECT * FROM lecture_videos";
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -121,9 +120,18 @@ app.get("/userRoom", (req, res) => {
 });
 
 app.get("/community", (req, res) => {
-  res.render("community", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_POSTING_QUERY = `SELECT * FROM posting`;
+  connection.query(SELECT_POSTING_QUERY, (err, results) => {
+    if (err) {
+      return res.send(err);
+    } else {
+      console.log(results);
+      res.render("community", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        posting: results
+      });
+    }
   });
 });
 
@@ -140,6 +148,7 @@ app.get("/lectures/add", (req, res) => {
 });
 
 app.get("/lectures", (req, res) => {
+  const SELECET_ALL_PRODUCTS_QUERY = "SELECT * FROM lecture_videos";
   connection.query(SELECET_ALL_PRODUCTS_QUERY, (err, results) => {
     if (err) {
       return res.send(err);
