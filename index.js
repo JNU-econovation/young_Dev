@@ -1,14 +1,26 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
+const session = require("express-session");
+const FileStore = require("session-file-store")(session);
 const bodyParser = require("body-parser");
 // const path = require('path')
 const app = express();
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
+app.use(
+  session({
+    secret: "piano",
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore()
+  })
+);
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -30,22 +42,78 @@ connection.connect(err => {
   }
 });
 
+// let login_state = false;
+// let user_email;
+// let user_name;
+
 app.use(express.static("public"));
 app.use(cors());
+
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
+});
+
+app.post("/", (req, res) => {
+  req.session.logined = req.body.login_state;
+  req.session.user_email = req.body.user_email;
+  req.session.user_name = req.body.user_name;
+
+  console.log(
+    `login_state: ${req.session.logined}\n user email: ${req.session.user_email}\n user name: ${req.session.user_name}`
+  );
+
+  const FIND_USER_QUERY = `SELECT user_email FROM user WHERE user_email='${req.session.user_email}'`;
+  connection.query(FIND_USER_QUERY, (err, results) => {
+    console.log(results);
+    if (results) {
+      // 데이터베이스에 등록된 사용자
+      return res.status(200).json({
+        userdata: results
+      });
+    } else {
+      // 새로운 사용자
+      const INSERT_USER_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${user_email}', '${user_name}')`;
+      connection.query(INSERT_USER_QUERY, (err, results) => {
+        if (err) {
+          console.log(err);
+          return res.status(404).send(err);
+        } else {
+          return res.status(200).json({
+            userdata: results
+          });
+        }
+      });
+    }
+  });
+});
+
+app.post("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
 });
 
 app.get("/tutors", (req, res) => {
-  res.render("tutors");
+  res.render("tutors", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
 });
 
 app.get("/songs", (req, res) => {
-  res.render("songs");
+  res.render("songs", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
 });
 
-app.get("/login", (req, res) => {
-  res.render("login");
+app.get("/userRoom", (req, res) => {
+  res.render("userRoom", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
 });
 
 app.get("/lectures/add", (req, res) => {
@@ -67,33 +135,6 @@ app.get("/lectures", (req, res) => {
     } else {
       return res.json({
         data: results
-      });
-    }
-  });
-});
-
-app.post("/hello", (req, res) => {
-  var user_email = req.body.user_email;
-  var user_name = req.body.user_name;
-  console.log(`user email: ${user_email}\n user name: ${user_name}`);
-  const FIND_USER_QUERY = `SELECT user_email from user WHERE user_email='${user_email}'`;
-  const INSERT_USER_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${user_email}', '${user_name}')`;
-  connection.query(FIND_USER_QUERY, (err, results) => {
-    console.log(results);
-    if (results) {
-      return res.status(200).json({
-        userdata: results
-      });
-    } else {
-      connection.query(INSERT_USER_QUERY, (err, results) => {
-        if (err) {
-          console.log(err);
-          return res.status(404).send(err);
-        } else {
-          return res.status(200).json({
-            userdata: results
-          });
-        }
       });
     }
   });
