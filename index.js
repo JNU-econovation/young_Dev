@@ -3,6 +3,7 @@ const cors = require("cors");
 const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
+
 const bodyParser = require("body-parser");
 // const path = require('path')
 const app = express();
@@ -27,20 +28,20 @@ app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 const SELECET_ALL_PRODUCTS_QUERY = "SELECT * FROM lecture_videos";
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "@jinjub98",
-  database: "piano_tutoring"
-});
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "@jinjub98",
+//   database: "piano_tutoring"
+// });
 
-connection.connect(err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Connected to the MySQL server");
-  }
-});
+// connection.connect(err => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Connected to the MySQL server");
+//   }
+// });
 
 // let login_state = false;
 // let user_email;
@@ -114,6 +115,10 @@ app.get("/userRoom", (req, res) => {
     login_state: req.session.logined,
     user_name: req.session.user_name
   });
+});
+
+app.get("/community", (req, res) => {
+  res.render("community");
 });
 
 app.get("/lectures/add", (req, res) => {

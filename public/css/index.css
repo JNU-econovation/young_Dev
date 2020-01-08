@@ -53,11 +53,11 @@ a:hover {
   font-family: "montserrat-light";
 }
 .login-button {
-  color : #808080;
+  color: #808080;
 }
 
 .login-button:hover {
-  color : #ffffff;
+  color: #ffffff;
 }
 
 /* download buttons */
@@ -176,4 +176,11 @@ h2 {
 }
 .container {
   padding-top: 100px;
+}
+
+/*footer*/
+
+#footer {
+  text-align: center;
+  padding: 1rem 1rem;
 }
