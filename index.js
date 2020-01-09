@@ -5,7 +5,7 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 
 const bodyParser = require("body-parser");
-// const path = require('path')
+const path = require("path");
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -110,7 +110,30 @@ app.get("/tutors", (req, res) => {
 });
 
 app.get("/tutors-profile", (req, res) => {
-  res.send("not yet");
+  const tid = req.query.tutor_id;
+  const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id='${tid}'`;
+  connection.query(SELECT_TUTOR_MOREINFO_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("tutors-profile", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        tutor_info: result
+      });
+    }
+  });
+});
+
+app.post("/enroll_tutor", (req, res) => {
+  const INSERT_ENROLL_TUTOR_QUERY = `INSERT INTO enroll_tutor(user_email, tutor_id) values ('${req.session.user_email}','${req.body.tid}');`;
+  connection.query(INSERT_ENROLL_TUTOR_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      return res.status(200).end();
+    }
+  });
 });
 
 app.get("/songs", (req, res) => {
