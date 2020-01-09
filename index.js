@@ -99,9 +99,13 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/tutors", (req, res) => {
-  res.render("tutors", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM tutor`;
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+    res.render("tutors", {
+      login_state: req.session.logined,
+      user_name: req.session.user_name,
+      information: result
+    });
   });
 });
 
@@ -127,12 +131,11 @@ app.get("/userRoom", (req, res) => {
 });
 
 app.get("/community", (req, res) => {
-  const SELECT_POSTING_QUERY = `SELECT * FROM posting`;
-  connection.query(SELECT_POSTING_QUERY, (err, results) => {
+  const SELECT_POST_THUMBNAIL_QUERY = `SELECT post_id,title,description,user_name FROM posting LEFT JOIN user ON posting.user_email = user.user_email;`;
+  connection.query(SELECT_POST_THUMBNAIL_QUERY, (err, results) => {
     if (err) {
       return res.send(err);
     } else {
-      console.log(results);
       res.render("community", {
         login_state: req.session.logined,
         user_name: req.session.user_name,

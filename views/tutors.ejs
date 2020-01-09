@@ -84,124 +84,22 @@
   
   
       <div class="row">
-  
-        <div class="tutors-column col-lg-4 col-md-6">
-  
-          <div class="card">
-            <img class="card-img-top" src="images/mozart-tutor.jpg" alt="mozart"></img>
-            <div class="card-body">
-              <h2>Mozart</h2>
-              <p>Beginner Avaliable</p>
-              <p>5 Lecture Per Day</p>
-              <p>Basic classic theory</p>
-              <button class="btn btn-lg btn-block btn-dark" type="button">Sign Up</button>
-            </div>
-          </div>
-        </div>
-  
-        <div class="tutors-column col-lg-4 col-md-6">
-          <div class="card">
-            <img class="card-img-top" src="images/choppin-tutor.jpeg" alt="choppin"></img>
-            <div class="card-body">
-              <h2>Choppin</h2>
-              <p>Intermediate Recommended</p>
-              <p>7 Lecture Per Day</p>
-              <p>Realtime Communication</p>
-              <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-            </div>
-          </div>
-        </div>
-  
-        <div class="tutors-column col-lg-4">
-          <div class="card">
-            <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-            <div class="card-body">
-              <h2>Franz</h2>
-              <p>professional Recommended</p>
-              <p>10 Lecture Per Day</p>
-              <p>Realtime Communication</p>
-              <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-            </div>
-          </div>
-        </div>
 
-        <div class="tutors-column col-lg-4">
+        <% information.forEach(function(info){ %> 
+          <div class="tutors-column col-lg-4 col-md-6">
             <div class="card">
-              <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
+              <img class="card-img-top" src=<%= info.profile_image %> alt="mozart"></img>
               <div class="card-body">
-                <h2>Franz</h2>
-                <p>professional Recommended</p>
-                <p>10 Lecture Per Day</p>
-                <p>Realtime Communication</p>
-                <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
+                <h2><%= info.tutor_name %></h2>
+                <p><%= info.description1 %></p>
+                <p><%= info.description2 %></p>
+                <p><%= info.description3 %></p>
+                <button class="btn btn-lg btn-block btn-dark" type="button">More on</button>
               </div>
             </div>
           </div>
+        <% }) %>
 
-          <div class="tutors-column col-lg-4">
-              <div class="card">
-                <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-                <div class="card-body">
-                  <h2>Franz</h2>
-                  <p>professional Recommended</p>
-                  <p>10 Lecture Per Day</p>
-                  <p>Realtime Communication</p>
-                  <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="tutors-column col-lg-4">
-                <div class="card">
-                  <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-                  <div class="card-body">
-                    <h2>Franz</h2>
-                    <p>professional Recommended</p>
-                    <p>10 Lecture Per Day</p>
-                    <p>Realtime Communication</p>
-                    <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="tutors-column col-lg-4">
-                  <div class="card">
-                    <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-                    <div class="card-body">
-                      <h2>Franz</h2>
-                      <p>professional Recommended</p>
-                      <p>10 Lecture Per Day</p>
-                      <p>Realtime Communication</p>
-                      <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="tutors-column col-lg-4">
-                    <div class="card">
-                      <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-                      <div class="card-body">
-                        <h2>Franz</h2>
-                        <p>professional Recommended</p>
-                        <p>10 Lecture Per Day</p>
-                        <p>Realtime Communication</p>
-                        <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="tutors-column col-lg-4">
-                      <div class="card">
-                        <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-                        <div class="card-body">
-                          <h2>Franz</h2>
-                          <p>professional Recommended</p>
-                          <p>10 Lecture Per Day</p>
-                          <p>Realtime Communication</p>
-                          <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-                        </div>
-                      </div>
-                    </div>
   </section>
 
 
