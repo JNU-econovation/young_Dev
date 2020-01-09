@@ -26,26 +26,25 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
-const SELECET_ALL_PRODUCTS_QUERY = "SELECT * FROM lecture_videos";
 
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "@jinjub98",
-//   database: "piano_tutoring"
-// });
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "@jinjub98",
+  database: "piano_tutoring"
+});
 
-// connection.connect(err => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Connected to the MySQL server");
-//   }
-// });
+connection.connect(err => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Connected to the MySQL server");
+  }
+});
 
-// let login_state = false;
-// let user_email;
-// let user_name;
+let login_state = false;
+let user_email;
+let user_name;
 
 app.use(express.static("public"));
 app.use(cors());
@@ -69,19 +68,22 @@ app.post("/", (req, res) => {
   const FIND_USER_QUERY = `SELECT user_email FROM user WHERE user_email='${req.session.user_email}'`;
   connection.query(FIND_USER_QUERY, (err, results) => {
     console.log(results);
-    if (results) {
+    if (results.length) {
       // 데이터베이스에 등록된 사용자
+      console.log("이미 등록된 사용자");
       return res.status(200).json({
         userdata: results
       });
     } else {
       // 새로운 사용자
-      const INSERT_USER_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${user_email}', '${user_name}')`;
+      console.log("new user!!");
+      const INSERT_USER_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${req.session.user_email}', '${req.session.user_name}')`;
       connection.query(INSERT_USER_QUERY, (err, results) => {
         if (err) {
           console.log(err);
           return res.status(404).send(err);
         } else {
+          console.log("inserted new user");
           return res.status(200).json({
             userdata: results
           });
@@ -118,7 +120,19 @@ app.get("/userRoom", (req, res) => {
 });
 
 app.get("/community", (req, res) => {
-  res.render("community");
+  const SELECT_POSTING_QUERY = `SELECT * FROM posting`;
+  connection.query(SELECT_POSTING_QUERY, (err, results) => {
+    if (err) {
+      return res.send(err);
+    } else {
+      console.log(results);
+      res.render("community", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        posting: results
+      });
+    }
+  });
 });
 
 app.get("/lectures/add", (req, res) => {
@@ -134,6 +148,7 @@ app.get("/lectures/add", (req, res) => {
 });
 
 app.get("/lectures", (req, res) => {
+  const SELECET_ALL_PRODUCTS_QUERY = "SELECT * FROM lecture_videos";
   connection.query(SELECET_ALL_PRODUCTS_QUERY, (err, results) => {
     if (err) {
       return res.send(err);
