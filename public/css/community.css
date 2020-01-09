@@ -200,3 +200,8 @@ h2 {
   text-align: center;
   padding: 1rem 1rem;
 }
+
+.fa-edit {
+  display: block;
+  text-align: right;
+}
