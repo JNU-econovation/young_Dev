@@ -145,6 +145,13 @@ app.get("/community", (req, res) => {
   });
 });
 
+app.get("/lecture-playing", (req, res) => {
+  res.render("lecture-playing", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
+});
+
 app.get("/lectures/add", (req, res) => {
   const { tid, video_path } = req.query;
   const INSERT_LECTURES_QUERY = `INSERT INTO lecture_videos (tid, video_path) VALUES(${tid}, '${video_path}')`;
