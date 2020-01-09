@@ -99,9 +99,13 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/tutors", (req, res) => {
-  res.render("tutors", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM tutor`;
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+    res.render("tutors", {
+      login_state: req.session.logined,
+      user_name: req.session.user_name,
+      information: result
+    });
   });
 });
 
