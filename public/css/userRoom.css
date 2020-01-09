@@ -186,6 +186,8 @@ h2 {
   border: none;
   margin: 3rem;
   color: #fff;
-.none {
+}
+
+#hide {
   display: none;
 }
