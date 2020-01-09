@@ -137,9 +137,42 @@ app.post("/enroll_tutor", (req, res) => {
 });
 
 app.get("/songs", (req, res) => {
-  res.render("songs", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM song`;
+  console.log("GET songs 들어왔음");
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+    console.log(result);
+    res.render("songs", {
+      login_state: req.session.logined,
+      user_name: req.session.user_name,
+      information: result
+    });
+  });
+});
+
+app.get("/songs-profile", (req, res) => {
+  const sid = req.query.song_id;
+  const SELECT_SONG_MOREINFO_QUERY = `SELECT song_id,song_name,song_image,artist FROM song WHERE song_id='${sid}'`;
+  connection.query(SELECT_SONG_MOREINFO_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("songs-profile", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        song_info: result
+      });
+    }
+  });
+});
+
+app.post("/enroll_song", (req, res) => {
+  const INSERT_ENROLL_SONG_QUERY = `INSERT INTO enroll_song(user_email, song_id) values ('${req.session.user_email}','${req.body.sid}');`;
+  connection.query(INSERT_ENROLL_SONG_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      return res.status(200).end();
+    }
   });
 });
 
@@ -162,6 +195,13 @@ app.get("/community", (req, res) => {
         posting: results
       });
     }
+  });
+});
+
+app.get("/lecture-playing", (req, res) => {
+  res.render("lecture-playing", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
   });
 });
 

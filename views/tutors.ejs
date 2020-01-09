@@ -105,14 +105,11 @@
       </div>
       <script>
         function gotoTP(tutor_id) {
-          console.log(tutor_id);
           var url = `/tutors-profile?tutor_id=${tutor_id}`;
-          console.log(url);
           axios
             .get(url, {
             })
             .then(function(result) {
-              console.log('clicked');
               window.location.href = url;
             })
             .catch(function(error) {

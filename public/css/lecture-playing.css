@@ -1,10 +1,14 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css);
+
 #title {
   background-color: #000000;
   color: #fff;
 }
 
 .container-fluid {
-  padding: 0% 15%;
+  padding: 5rem 5rem;
+  text-align: center;
 }
 
 h1 {
@@ -176,42 +180,38 @@ h2 {
 }
 /* log-in button */
 
-.portfolio {
-  padding: 6%;
+/*video*/
+.text-center {
+  color: #000;
+}
+.hm-gradient {
+  background-color: #eee;
+}
+.darken-grey-text {
+  color: #2e2e2e;
+}
+.file-upload {
   text-align: center;
-}
-.heading {
-  background: #fff;
-  padding: 1%;
-  text-align: left;
-  box-shadow: 0px 0px 4px 0px #545b62;
-}
-.heading img {
-  width: 10%;
-}
-.bio-info {
-  padding: 5%;
-  background: #fff;
-  box-shadow: 0px 0px 4px 0px #b0b3b7;
-}
-.name {
-  font-family: "montserrat", cursive;
-  font-weight: 600;
-}
-.bio-image {
-  text-align: center;
-}
-.bio-image img {
-  border-radius: 50%;
-  width: 300px;
-  height: 300px;
-}
-.bio-content {
-  text-align: left;
-}
-.bio-content p {
-  font-weight: 600;
-  font-size: 30px;
 }
 
-/*lecture list*/
+strong {
+  color: black;
+}
+
+/*submit btn*/
+.btn-label {
+  position: relative;
+  left: -12px;
+  display: inline;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px 0 0 3px;
+  text-align: center;
+}
+.btn-labeled {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.btn {
+  margin-bottom: 10px;
+}
