@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="google-signin-scope" content="profile email">
+    <meta
+      name="google-signin-client_id"
+      content="261543698673-t61eandlv2u4fcomusf0omtti4efutov.apps.googleusercontent.com"
+    >
+    <script src="https://apis.google.com/js/platform.js?onload=onload" async defer></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <title>Piano Tutoring</title>
+
+
+  <!-- google fonts Ubuntu, montserrat-->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap" rel="stylesheet">
+
+
+  <!-- font awesome-->
+  <script src="https://kit.fontawesome.com/e156ac3480.js" crossorigin="anonymous"></script>
+
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/tutors-profile.css" />
+
+  <!-- bootstrap Javascript, jQuery-->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <style>
+  #customBtn{
+    display: inline-block;
+    }
+  .abcRioButtonBlue .abcRioButtonContentWrapper{
+    background-color: black;
+  }
+
+
+  </style>
+  
+</head>
+
+<body>
+
+  <section id="title">
+    <div class="container-fluid">
+
+      <!-- Nav Bar -->
+
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">piano tutoring</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
+            
+            <li class="nav-item">
+                <% if(login_state) { %>
+                  <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
+                <% } else { %>
+                  <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
+                <% } %>
+            </li>
+        </div>
+
+      </nav>
+      <!-- Title -->
+      
+    </div>
+  </section>
+  
+  <div class="container portfolio">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="heading">				
+				<img src="https://image.ibb.co/cbCMvA/logo.png" />
+			</div>
+		</div>	
+	</div>
+	<div class="bio-info">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="bio-image">
+							<img src="images/mozart-tutor.jpg" alt="image" />
+						</div>			
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-6">
+				<div class="bio-content">
+					<h1>I'm Mozart</h1>
+					<h6>Born in Salzburg, I showed prodigious ability from my earliest childhood. Already competent on keyboard and violin, I composed from the age of five and performed before European royalty. At 17, I was engaged as a musician at the Salzburg court but grew restless and travelled in search of a better position. While visiting Vienna in 1781. </h6>
+					<!-- <p>P.S I have no special talent, I'm just passionately curious ;)</p> -->
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>

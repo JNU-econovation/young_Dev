@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const mysql = require("mysql");
+// const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 
@@ -27,20 +27,20 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "@jinjub98",
-  database: "piano_tutoring"
-});
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "@jinjub98",
+//   database: "piano_tutoring"
+// });
 
-connection.connect(err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Connected to the MySQL server");
-  }
-});
+// connection.connect(err => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Connected to the MySQL server");
+//   }
+// });
 
 let login_state = false;
 let user_email;
@@ -106,6 +106,13 @@ app.get("/tutors", (req, res) => {
       user_name: req.session.user_name,
       information: result
     });
+  });
+});
+
+app.get("/tutors-profile", (req, res) => {
+  res.render("tutors-profile", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
   });
 });
 
