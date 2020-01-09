@@ -109,6 +109,10 @@ app.get("/tutors", (req, res) => {
   });
 });
 
+app.get("/tutors-profile", (req, res) => {
+  res.send("not yet");
+});
+
 app.get("/songs", (req, res) => {
   res.render("songs", {
     login_state: req.session.logined,
