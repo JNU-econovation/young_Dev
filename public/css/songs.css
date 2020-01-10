@@ -82,6 +82,9 @@ h3 {
 p {
   color: #8f8f8f;
 }
+.title-p {
+  margin-bottom: 10rem;
+}
 
 #features {
   background-color: #fff;
@@ -171,5 +174,9 @@ h2 {
 
 #footer {
   text-align: center;
+  padding: 1rem 1rem;
+}
+
+.col-sm-4 {
   padding: 1rem 1rem;
 }
