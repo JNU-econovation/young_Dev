@@ -5,7 +5,7 @@
     <meta name="google-signin-scope" content="profile email" />
     <meta
       name="google-signin-client_id"
-      content="261543698673-t61eandlv2u4fcomusf0omtti4efutov.apps.googleusercontent.com"
+      content="261543698673-k2d006oh89heustmu8rt1e4k159qk4k8.apps.googleusercontent.com"
     />
     <script
       src="https://apis.google.com/js/platform.js?onload=onload"
@@ -163,6 +163,8 @@
     <script>
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
+        
+        console.log("onSignIn 들어옴");
         var profile = googleUser.getBasicProfile();
         // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
         // console.log("Full Name: " + profile.getName());
