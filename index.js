@@ -29,7 +29,7 @@ app.set("view options", { layout: false });
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "root",
+  user: "young",
   password: "pianotutoring",
   database: "piano_tutoring"
 });
