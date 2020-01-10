@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-// const mysql = require("mysql");
+const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 
 const bodyParser = require("body-parser");
-// const path = require('path')
+const path = require("path");
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -27,20 +27,20 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "@jinjub98",
-//   database: "piano_tutoring"
-// });
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "@jinjub98",
+  database: "piano_tutoring"
+});
 
-// connection.connect(err => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Connected to the MySQL server");
-//   }
-// });
+connection.connect(err => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Connected to the MySQL server");
+  }
+});
 
 let login_state = false;
 let user_email;
@@ -110,16 +110,69 @@ app.get("/tutors", (req, res) => {
 });
 
 app.get("/tutors-profile", (req, res) => {
-  res.render("tutors-profile", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const tid = req.query.tutor_id;
+  const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id='${tid}'`;
+  connection.query(SELECT_TUTOR_MOREINFO_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("tutors-profile", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        tutor_info: result
+      });
+    }
+  });
+});
+
+app.post("/enroll_tutor", (req, res) => {
+  const INSERT_ENROLL_TUTOR_QUERY = `INSERT INTO enroll_tutor(user_email, tutor_id) values ('${req.session.user_email}','${req.body.tid}');`;
+  connection.query(INSERT_ENROLL_TUTOR_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      return res.status(200).end();
+    }
   });
 });
 
 app.get("/songs", (req, res) => {
-  res.render("songs", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM song`;
+  console.log("GET songs 들어왔음");
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+    console.log(result);
+    res.render("songs", {
+      login_state: req.session.logined,
+      user_name: req.session.user_name,
+      information: result
+    });
+  });
+});
+
+app.get("/songs-profile", (req, res) => {
+  const sid = req.query.song_id;
+  const SELECT_SONG_MOREINFO_QUERY = `SELECT song_id,song_name,song_image,artist FROM song WHERE song_id='${sid}'`;
+  connection.query(SELECT_SONG_MOREINFO_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("songs-profile", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        song_info: result
+      });
+    }
+  });
+});
+
+app.post("/enroll_song", (req, res) => {
+  const INSERT_ENROLL_SONG_QUERY = `INSERT INTO enroll_song(user_email, song_id) values ('${req.session.user_email}','${req.body.sid}');`;
+  connection.query(INSERT_ENROLL_SONG_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      return res.status(200).end();
+    }
   });
 });
 

@@ -20,6 +20,9 @@
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 </head>
 
 <body>
@@ -242,148 +245,61 @@
               </div>
               <!--/.Card-->
               </div>
-
-            
-  
-        </div>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+      <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">Songs</h1>
+        <p class="lead font-weight-normal">Simple and affordable price plans for you, Find a song fits you well.</p>
+        <a class="btn btn-outline-secondary" href="#">More Details</a>
       </div>
-  
-  </section>
-  
-    <!-- <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-    <div class="col-md-5 p-lg-5 mx-auto my-5">
-    <h1 class="display-4 font-weight-normal">Songs</h1>      <p class="lead font-weight-normal">Simple and affordable price plans for you, Find a song who fits you well.</p>
-    <a class="btn btn-outline-secondary" href="#">More Details</a>
-    </div>
-    <div class="product-device shadow-sm d-none d-md-block"></div>
-    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+      <div class="product-device shadow-sm d-none d-md-block"></div>
+      <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
     </div>
     
-    <div class="container-fluid">
-      <div class="row">
-       <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
+    
+    <% let count = 0 %>
+    <% information.forEach(function(info){ %> 
+      <% if(count%3==0) { %>
+        <div class="container-fluid">
+        <div class="row">
+        <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
+      <% } %>
+        <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
 
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
           <div class="my-3 py-3">
-          <h2 class="display-5">Sakamoto Ryuichi</h2>
-          <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/ryuichisakamoto.png)"></div>
-          </div>
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-           <h2 class="display-5">WE LOVE CREAT</h2>
-           <p class="lead">The time, penetrated</p>
-           </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[ccm]welove시간을뚫고.png)"></div>
+            <h2 class="display-5"><%=info.artist%></h2>
+            <p class="lead"><%=info.song_name%></p>
+            <button class="btn btn-lg btn-block btn-dark" type="button" onclick="gotoSP(<%=info.song_id%>)">More on</button>
           </div>
 
-         <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-            <h2 class="display-5">Sakamoto Ryuichi</h2>
-            <p class="lead">Merry Christmas Mr.Lawrence</p>
+          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(<%=info.song_image%>)">
           </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[pop]badguy.png)"></div>
-          </div>
+
         </div>
-      </div>
-    </div>
-    <div class="container-fluid">
-      <div class="row">
-       <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-          <h2 class="display-5">Sakamoto Ryuichi</h2>
-          <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/ryuichisakamoto.png)"></div>
-          </div>
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-           <h2 class="display-5">WE LOVE CREAT</h2>
-           <p class="lead">The time, penetrated</p>
-           </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[ccm]welove시간을뚫고.png)"></div>
-          </div>
-
-         <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-            <h2 class="display-5">Sakamoto Ryuichi</h2>
-            <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[pop]badguy.png)"></div>
-          </div>
+      <% if(count%3==2) { %>
         </div>
-      </div>
-    </div>
-
-    <div class="container-fluid">
-      <div class="row">
-       <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-          <h2 class="display-5">Sakamoto Ryuichi</h2>
-          <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/ryuichisakamoto.png)"></div>
-          </div>
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-           <h2 class="display-5">WE LOVE CREAT</h2>
-           <p class="lead">The time, penetrated</p>
-           </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[ccm]welove시간을뚫고.png)"></div>
-          </div>
-
-         <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-            <h2 class="display-5">Sakamoto Ryuichi</h2>
-            <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[pop]badguy.png)"></div>
-          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="container-fluid">
-      <div class="row">
-       <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-          <h2 class="display-5">Sakamoto Ryuichi</h2>
-          <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/ryuichisakamoto.png)"></div>
-          </div>
-
-          <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-           <h2 class="display-5">WE LOVE CREAT</h2>
-           <p class="lead">The time, penetrated</p>
-           </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[ccm]welove시간을뚫고.png)"></div>
-          </div>
-
-         <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-          <div class="my-3 py-3">
-            <h2 class="display-5">Sakamoto Ryuichi</h2>
-            <p class="lead">Merry Christmas Mr.Lawrence</p>
-          </div>
-          <div class="album bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0; background-image: url(../images/[pop]badguy.png)"></div>
-          </div>
         </div>
-      </div>
-    </div> -->
 
+      <% } count++ %>
+    <% }) %>
 
-      
+    <script>
+      function gotoSP(song_id) {
+        console.log(song_id);
+        var url = `/songs-profile?song_id=${song_id}`;
+        console.log(url);
+        axios
+          .get(url, {
+          })
+          .then(function(result) {
+            window.location.href = url;
+          })
+          .catch(function(error) {
+            alert(error.message);
+          });
+    }
+
+    </script>
 
   <!-- Footer -->
 

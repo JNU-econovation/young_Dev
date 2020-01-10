@@ -30,14 +30,14 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script>
-    function enroll_tutor(tutor_id) {
-      console.log(tutor_id);
+    function enroll_song(song_id) {
+      console.log(song_id);
         axios
-          .post("/enroll_tutor", {
-            tid : tutor_id
+          .post("/enroll_song", {
+            sid : song_id
           })
           .then(function(result) {
-            if (result.status === 200) window.location.href = "/tutors";
+            if (result.status === 200) window.location.href = "/songs";
           })
           .catch(function(error) {
             alert(error.message);
@@ -103,16 +103,16 @@
 	  			<div class="row">
 	  				<div class="col-md-12">
 	  					<div class="bio-image">
-	  						<img src= <%=tutor_info[0].profile_image%> alt="image" />
+	  						<img src= <%=song_info[0].song_image%> alt="image" />
 	  					</div>			
 	  				</div>
 	  			</div>	
 	  		</div>
 	  		<div class="col-md-6">
 	  			<div class="bio-content">
-	  				<h1>I'm <%=tutor_info[0].tutor_name%></h1>
-	  				<h6><%=tutor_info[0].long_description %></h6>
-            <button type="button" class="btn btn-outline-light btn-lg download-button" onclick="enroll_tutor(<%= tutor_info[0].tutor_id %>);">Enroll</button>
+	  				<h1>I'm <%=song_info[0].song_name%></h1>
+	  				<h6><%=song_info[0].artist %></h6>
+            <button type="button" class="btn btn-outline-light btn-lg download-button" onclick="enroll_song(<%= song_info[0].song_id %>);">Enroll</button>
 	  			</div>
 	  		</div>
 	  	</div>	
