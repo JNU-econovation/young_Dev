@@ -191,3 +191,7 @@ h2 {
 #hide {
   display: none;
 }
+
+.pb-2 {
+  text-align: left;
+}

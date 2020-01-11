@@ -1,15 +1,15 @@
-html {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css);
+
 #title {
   background-color: #000000;
   color: #fff;
+  height: auto;
 }
 
 .container-fluid {
-  padding: 3% 15% 7%;
+  height: auto;
+  padding: 3% 15%;
 }
 
 h1 {
@@ -25,19 +25,14 @@ body {
 
 a {
   text-decoration: none;
-}
-
-a.black {
   color: #000000;
 }
 
-a.white {
-  color: #ffffff;
-}
 a:hover {
   text-decoration: none;
   color: #808080;
 }
+
 /* navigation bar */
 
 .navbar-brand {
@@ -46,7 +41,7 @@ a:hover {
 }
 
 .navbar {
-  padding: 0 0 4.5rem;
+  padding: 0 0 0;
 }
 
 .nav-item {
@@ -72,12 +67,13 @@ a:hover {
 
 /* title image */
 .title-image {
-  /* background-image: url(images/bg-mastgead.jpg); */
+  background-image: url(public/images/bg-masthead.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color: #000000;
+  /* background-color:#000000; */
+  width: 100%;
 }
 
 /* features section*/
@@ -116,7 +112,7 @@ p {
 /* testimonials */
 
 #testimonials {
-  padding: 7% 10% 0%;
+  padding: 7% 10%;
   text-align: center;
   background-color: #000000;
   color: #ffffff;
@@ -127,27 +123,13 @@ h2 {
   font-weight: 600;
   font-size: 3rem;
   line-height: 1.5;
+  color: #ffffff;
 }
 
 .testimonial-image {
   width: 10%;
   border-radius: 100%;
   margin: 20px;
-}
-
-.more-on-btn {
-  width: 100px;
-  text-align: center;
-  text-decoration: none;
-  color: #000;
-}
-.more-on-btnwhite {
-  color: #fff;
-  width: 100px;
-  text-align: center;
-  text-decoration: none;
-  padding-top: 50px;
-  display: inline-block;
 }
 
 #press {
@@ -165,7 +147,7 @@ h2 {
   padding: 3% 15%;
 }
 
-/* pricing=>tutors Section */
+/* tutors Section */
 
 #tutors {
   padding: 100px;
@@ -183,19 +165,36 @@ h2 {
   object-fit: cover;
 }
 
+.card-body > h2 {
+  color: #000000;
+}
+
 /* songs */
 #songs {
   padding: 100px;
   text-align: center;
-  background-color: #000000;
-  color: #ffffff;
 }
 .songs-column {
   padding: 3% 2%;
   padding-top: 50px;
 }
-.container {
-  padding-top: 100px;
+
+/* jumbotron */
+
+.jumbotron {
+  /* background-image : url("../images/bg-masthead.jpg"); */
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../images/bg-masthead.jpg");
+  background-repeat: no-repeat;
+  height: 100%;
+  background-size: 100%;
+  text-align: center;
+}
+
+#main-header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /*footer*/
@@ -203,4 +202,36 @@ h2 {
 #footer {
   text-align: center;
   padding: 1rem 1rem;
+}
+
+.fa-edit {
+  display: block;
+  text-align: right;
+}
+#post-form {
+  text-align: center;
+}
+.row {
+  text-align: center;
+}
+.container {
+  text-align: center;
+  padding: 7rem;
+}
+
+.btn-label {
+  position: relative;
+  left: -12px;
+  display: inline;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px 0 0 3px;
+  text-align: center;
+}
+.btn-labeled {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.btn {
+  margin-bottom: 10px;
 }
