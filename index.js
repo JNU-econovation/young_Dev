@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-// const mysql = require("mysql");
+const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 
@@ -27,20 +27,20 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "young",
-//   password: "pianotutoring",
-//   database: "piano_tutoring"
-// });
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "young",
+  password: "pianotutoring",
+  database: "piano_tutoring"
+});
 
-// connection.connect(err => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Connected to the MySQL server");
-//   }
-// });
+connection.connect(err => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Connected to the MySQL server");
+  }
+});
 
 let login_state = false;
 let user_email;
