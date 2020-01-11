@@ -3,6 +3,8 @@ const cors = require("cors");
 const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
+const fs = require('fs');
+const https = require("https");
 
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -230,6 +232,11 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-app.listen(4000, () => {
+
+https.createServer({
+	key: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem'),
+	cert: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem'),
+	ca: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem')
+},app).listen(4000, () => {
   console.log(`Young's server listening on port 4000`);
 });
