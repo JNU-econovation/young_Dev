@@ -176,6 +176,7 @@
         // The ID token you need to pass to your backend:
         // var id_token = googleUser.getAuthResponse().id_token;
         // console.log("ID Token: " + id_token);
+
         axios
           .post("/", {
             login_state: true,
@@ -183,13 +184,13 @@
             user_name: profile.getName()
           })
           .then(function(result) {
-            if (result.status === 200) window.location.href = "/";
+            if (result.status === 200) window.location.href = "/?user_name=${profile.getName()}`";
           })
           .catch(function(error) {
             alert(error.message);
           });
       }
-
+      
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function() {
