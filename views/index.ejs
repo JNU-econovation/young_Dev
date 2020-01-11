@@ -5,8 +5,9 @@
   <meta charset="utf-8">
   <title>Piano Tutoring</title>
 
-  <!-- google fonts Ubuntu, montserrat-->
+  <!-- google fonts Ubuntu, montserrat, nanumgodhic-->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
 
 
   <!-- font awesome-->
@@ -22,6 +23,37 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <!-- Javascript custumization -->
   <script type="text/javascrupt" src="../js/custumization.js"></script>
+  
+  <!--smooth scroll-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Add smooth scrolling to all links
+  $("a").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+});
+</script>
+
+
 </head>
 
 <body>
@@ -120,12 +152,12 @@
         <div class="carousel-item active">
           <h2>I no longer have to learn other songs. I've found the hottest music on Pianotutoring.</h2>
           <img class="testimonial-image" src="images/dog-img.jpg" alt="dog-profile">
-          <em>Pebbles, New York</em>
+          <em>Soeun Choi, Daejeon</em>
         </div>
         <div class="carousel-item">
           <h2 class="testimonial-text">I used to be so lonely, but with Pianotutoring's help, they've found the passion of my life. I think.</h2>
           <img class="testimonial-image" src="images/lady-img.jpg" alt="lady-profile">
-          <em>Beverly, Illinois</em>
+          <em>Yangha Kim, Gwangju</em>
         </div>
       </div>
       <a class="carousel-control-prev" href="#testimonial-carousel" role="button" data-slide="prev">
@@ -199,6 +231,8 @@
           </div>
         </div>
       </div>
+
+      <a class="col-sm-12 more-on-btn" href="/tutors">More on</a>
 </section>
 
 <!-- songs -->
@@ -210,7 +244,7 @@
   <div class="container">
     <div class="row">
 
-      <div class="col-sm-4">
+      <div class="col-lg-4">
         <!--Card-->
         <div class="card">
           <!--Card image-->
@@ -228,7 +262,7 @@
       </div>
       
 
-      <div class="col-sm-4">
+      <div class="col-lg-4">
         <!--Card-->
         <div class="card">
           <!--Card image-->
@@ -245,7 +279,7 @@
       <!--/.Card-->
       </div>
 
-      <div class="col-sm-4">
+      <div class="col-lg-4">
         <!--Card-->
         <div class="card">
           <!--Card image-->
@@ -264,6 +298,8 @@
 
       </div>
     </div>
+
+    <a class="col-sm-12 more-on-btnwhite" href="/songs">More on</a>
 
 </section>
 
