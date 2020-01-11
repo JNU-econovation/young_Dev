@@ -156,11 +156,25 @@
       <% } else { %>
         <h1 class="display-4 font-weight-normal">Let's Login</h1>
         <p class="lead font-weight-normal">Wellcome to Piano tutoring, we waited for you :)</p>
-        <div id="customBtn" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+        <div id="customBtn" class="g-signin2" onclick="temp();" data-onsuccess="onSignIn" data-theme="dark"></div>
       <% } %>
 
     </div>
     <script>
+      function temp(){
+        axios
+          .post("/", {
+            login_state: true,
+            user_email: "vvvpiano60@gmail.com",
+            user_name: "김서영"
+          })
+          .then(function(result) {
+            if (result.status === 200) window.location.href = "/";
+          })
+          .catch(function(error) {
+            alert(error.message);
+          });
+      }
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
 
@@ -184,13 +198,13 @@
             user_name: profile.getName()
           })
           .then(function(result) {
-            if (result.status === 200) window.location.href = "/?user_name=${profile.getName()}`";
+            if (result.status === 200) window.location.href = "/";
           })
           .catch(function(error) {
             alert(error.message);
           });
       }
-      
+
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function() {
