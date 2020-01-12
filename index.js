@@ -3,7 +3,7 @@ const cors = require("cors");
 const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
-const fs = require('fs');
+const fs = require("fs");
 const https = require("https");
 
 const bodyParser = require("body-parser");
@@ -114,14 +114,18 @@ app.get("/tutors", (req, res) => {
 app.get("/tutors-profile", (req, res) => {
   const tid = req.query.tutor_id;
   const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id='${tid}'`;
+  var FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}'`;
   connection.query(SELECT_TUTOR_MOREINFO_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
-      res.render("tutors-profile", {
-        login_state: req.session.logined,
-        user_name: req.session.user_name,
-        tutor_info: result
+      connection.query(FIND_ENROLL_TUTOR_QUERY, (err, result2) => {
+        res.render("tutors-profile", {
+          login_state: req.session.logined,
+          user_name: req.session.user_name,
+          tutor_info: result,
+          isEnrolled: result2
+        });
       });
     }
   });
@@ -141,7 +145,7 @@ app.post("/enroll_tutor", (req, res) => {
 app.get("/songs", (req, res) => {
   const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM song`;
   console.log("GET songs 들어왔음");
-  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+  connection.query(SELECT_SONG_INFO_QUERY, (err, result) => {
     console.log(result);
     res.render("songs", {
       login_state: req.session.logined,
@@ -179,9 +183,17 @@ app.post("/enroll_song", (req, res) => {
 });
 
 app.get("/userRoom", (req, res) => {
-  res.render("userRoom", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  var SELECT_TUTOR_INFO_QUERY = `select * from tutor, enroll_tutor where enroll_tutor.user_email='${req.session.user_email}' and enroll_tutor.tutor_id=tutor.tutor_id;`;
+  var SELECT_SONG_INFO_QUERY = `select * from song, enroll_song where enroll_song.user_email='${req.session.user_email}' and enroll_song.song_id=song.song_id;`;
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, tutors_list) => {
+    connection.query(SELECT_SONG_INFO_QUERY, (err2, songs_list) => {
+      res.render("userRoom", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        tutor_information: tutors_list,
+        song_information: songs_list
+      });
+    });
   });
 });
 
@@ -239,11 +251,14 @@ app.get("/lectures", (req, res) => {
   });
 });
 
+// https.createServer({
+// 	key: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem'),
+// 	cert: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem'),
+// 	ca: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem')
+// },app).listen(4000, () => {
+//   console.log(`Young's server listening on port 4000`);
+// });
 
-https.createServer({
-	key: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem'),
-	cert: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem'),
-	ca: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem')
-},app).listen(4000, () => {
+app.listen(4000, () => {
   console.log(`Young's server listening on port 4000`);
 });
