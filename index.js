@@ -114,12 +114,13 @@ app.get("/tutors", (req, res) => {
 app.get("/tutors-profile", (req, res) => {
   const tid = req.query.tutor_id;
   const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id='${tid}'`;
-  var FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}'`;
+  var FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}' and tutor_id='${tid}'`;
   connection.query(SELECT_TUTOR_MOREINFO_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
       connection.query(FIND_ENROLL_TUTOR_QUERY, (err, result2) => {
+        console.log("isEnrolled: ", result2);
         res.render("tutors-profile", {
           login_state: req.session.logined,
           user_name: req.session.user_name,
@@ -143,8 +144,7 @@ app.post("/enroll_tutor", (req, res) => {
 });
 
 app.get("/songs", (req, res) => {
-  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM song`;
-  console.log("GET songs 들어왔음");
+  const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
   connection.query(SELECT_SONG_INFO_QUERY, (err, result) => {
     console.log(result);
     res.render("songs", {
@@ -158,14 +158,18 @@ app.get("/songs", (req, res) => {
 app.get("/songs-profile", (req, res) => {
   const sid = req.query.song_id;
   const SELECT_SONG_MOREINFO_QUERY = `SELECT song_id,song_name,song_image,artist FROM song WHERE song_id='${sid}'`;
+  var FIND_ENROLL_SONG_QUERY = `SELECT * from enroll_song WHERE user_email='${req.session.user_email}' and song_id='${sid}'`;
   connection.query(SELECT_SONG_MOREINFO_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
-      res.render("songs-profile", {
-        login_state: req.session.logined,
-        user_name: req.session.user_name,
-        song_info: result
+      connection.query(FIND_ENROLL_SONG_QUERY, (err, result2) => {
+        res.render("songs-profile", {
+          login_state: req.session.logined,
+          user_name: req.session.user_name,
+          song_info: result,
+          isEnrolled: result2
+        });
       });
     }
   });
