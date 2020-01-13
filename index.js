@@ -10,14 +10,22 @@ const path = require("path");
 const app = express();
 
 ////////for webRTC//////////
+
+//로컬 테스트용
+// const http = require("http").Server(app);
+
+// 리모트 테스트용
 const https = require("https");
 app.use("/contents", express.static("./contents"));
-app.use("/views/conference", express.static("./views/conference"));
+app.use(
+  "/views/examples/conference",
+  express.static("./views/examples/conference")
+);
 
 // Routes ======================================================================
 // require("./controllers/route.js")(app);
 app.get("/webRTC", (req, res) => {
-  res.render("conference/webRTC.ejs", {
+  res.render("examples/conference/webRTC.ejs", {
     title: "Streaming Lesson"
   });
 });
@@ -291,6 +299,6 @@ https
     console.log(`Young's server listening on port 4000`);
   });
 
-// app.listen(4000, () => {
+// http.listen(4000, () => {
 //   console.log(`Young's server listening on port 4000`);
 // });
