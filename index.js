@@ -10,7 +10,7 @@ const path = require("path");
 const app = express();
 
 ////////for webRTC//////////
-const https = require("https").Server(app);
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use("/views/conference", express.static("./views/conference"));
 
