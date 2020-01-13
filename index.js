@@ -13,18 +13,15 @@ const app = express();
 ////////for webRTC//////////
 const http = require("http").Server(app);
 app.use("/contents", express.static("./contents"));
-app.use(
-  "/views/conference",
-  express.static("./views/conference")
-);
+app.use("/views/conference", express.static("./views/conference"));
 
 // Routes ======================================================================
 // require("./controllers/route.js")(app);
-app.get('/conference', (req, res) => {
-      res.render('conference/index.ejs', {
-        title: 'Streaming Lesson',
-      });
-    })
+app.get("/webRTC", (req, res) => {
+  res.render("conference/webRTC.ejs", {
+    title: "Streaming Lesson"
+  });
+});
 
 // Socket.io ======================================================================
 require("./controllers/socket.js")(http);
@@ -276,19 +273,30 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-// https.createServer({
-// 	key: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem'),
-// 	cert: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem'),
-// 	ca: fs.readFileSync('/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem')
-// },app).listen(4000, () => {
-//   console.log(`Young's server listening on port 4000`);
-// });
+https
+  .createServer(
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
+    app
+  )
+  .listen(4000, () => {
+    console.log(`Young's server listening on port 4000`);
+  });
 
-// app.listen(4000, () => {
-//   console.log(`Young's server listening on port 4000`);
-// });
+app.listen(4000, () => {
+  console.log(`Young's server listening on port 4000`);
+});
 
 // RTC Server listen
-http.listen(4000, () => {
-  console.log("WebRTC Lab server running at port 4000");
-});
+// http.listen(4000, () => {
+//   console.log("WebRTC Lab server running at port 4000");
+// });
