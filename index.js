@@ -10,6 +10,22 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
+////////for webRTC//////////
+const http = require("http").Server(app);
+app.use("/contents", express.static("./contents"));
+app.use(
+  "/views/examples/conference",
+  express.static("./views/examples/conference")
+);
+
+// Routes ======================================================================
+require("./controllers/route.js")(app);
+
+// Socket.io ======================================================================
+require("./controllers/socket.js")(http);
+
+////////////////////////////
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -263,6 +279,11 @@ app.get("/lectures", (req, res) => {
 //   console.log(`Young's server listening on port 4000`);
 // });
 
-app.listen(4000, () => {
-  console.log(`Young's server listening on port 4000`);
+// app.listen(4000, () => {
+//   console.log(`Young's server listening on port 4000`);
+// });
+
+// RTC Server listen
+http.listen(4000, () => {
+  console.log("WebRTC Lab server running at port 4000");
 });

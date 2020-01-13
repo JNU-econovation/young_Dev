@@ -1,0 +1,13 @@
+@charset "utf-8";
+/*!
+ *
+ * WebRTC Lab
+ * @author dodortus (dodortus@gmail.com / codejs.co.kr)
+ *
+ */
+
+.wrap {
+  width: 80%;
+  font-size: 1.2em;
+  text-align: center;
+}

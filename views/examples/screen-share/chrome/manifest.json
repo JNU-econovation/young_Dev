@@ -1,0 +1,34 @@
+{
+  "name": "WebRTC Lab ScreenShare",
+  "description": "ScreenShare extension for WebRTC Lab",
+  "version": "1.1.1",
+  "manifest_version": 2,
+  "minimum_chrome_version": "34",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "permissions": [
+    "desktopCapture",
+    "<all_urls>",
+    "*://localhost:*/*"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [ {
+    "js": [ "content.js" ],
+    "matches": [
+      "*://webrtclab.herokuapp.com/*",
+      "*://localhost:*/*"
+    ]
+  }],
+  "web_accessible_resources": [
+    "*.png"
+  ],
+  "externally_connectable": {
+	  "matches": [
+      "*://webrtclab.herokuapp.com/*",
+      "*://localhost:*/*"
+  	]
+	}
+}
