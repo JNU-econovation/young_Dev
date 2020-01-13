@@ -13,13 +13,37 @@
   <script src="https://kit.fontawesome.com/e156ac3480.js" crossorigin="anonymous"></script>
 
   <!-- bootstrap css -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="css/community.css" />
 
   <!-- bootstrap Javascript, jQuery-->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script>
+
+    function gotoPP(post_id) {
+      var url = `/posting?post_id=${post_id}`;
+      console.log(url);
+      axios
+        .get(url, {
+        })
+        .then(function (result) {
+          window.location.href = url;
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
+    }
+
+  </script>
 </head>
 
 <body>
@@ -31,7 +55,8 @@
 
       <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="/">piano tutoring</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -50,9 +75,9 @@
             </li>
             <li class="nav-item">
               <% if(login_state) { %>
-                <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
+              <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
               <% } else { %>
-                <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
+              <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
               <% } %>
             </li>
         </div>
@@ -61,69 +86,77 @@
 
       </nav>
 
-    </section>
+  </section>
 
-    <main id="board" role="main" class="container">
-  
-        <div class="my-3 p-3 bg-white rounded shadow-sm">
+  <main id="board" role="main" class="container">
 
-          <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates<i class="far  fa-edit fa-lg"></i></h6>
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
 
-          <% posting.forEach(function(post){ %> 
-            <div class="media text-muted pt-3">
-              <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-              <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark"><%= post.user_name %></strong>
-                <strong><%= post.title %></strong> <br>
-                <%= post.description %>
-              </p>
-            </div>
-          <% }) %>
-          
-          <small class="d-block text-right mt-3">
-            <a href="#">All updates</a>
-          </small>
+      <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates
+        <% if(login_state) { %>
+        <a href="post-page"><i class="far  fa-edit fa-lg"></i></a>
+        <% } %>
+      </h6>
+
+      <% posting.reverse().forEach(function(post){ %>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"><%= post.user_name %></strong>
+          <label for="post">
+            <a href="/posting?post_id=<%= post.post_id %>" onclick=gotoPP(<%= post.post_id %>)>
+              <strong><%= post.title %></strong> <br>
+              <%= post.description %>
+            </a>
+          </label>
+        </p>
+      </div>
+      <% }) %>
+
+      <small class="d-block text-right mt-3">
+        <a href="#">All updates</a>
+      </small>
+    </div>
+
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+      <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <strong class="text-gray-dark">Full Name</strong>
+            <a href="#">Follow</a>
+          </div>
+          <span class="d-block">@username</span>
         </div>
-  
-        <div class="my-3 p-3 bg-white rounded shadow-sm">
-          <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
-          <div class="media text-muted pt-3">
-            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <strong class="text-gray-dark">Full Name</strong>
-                <a href="#">Follow</a>
-              </div>
-              <span class="d-block">@username</span>
-            </div>
+      </div>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <strong class="text-gray-dark">Full Name</strong>
+            <a href="#">Follow</a>
           </div>
-          <div class="media text-muted pt-3">
-            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <strong class="text-gray-dark">Full Name</strong>
-                <a href="#">Follow</a>
-              </div>
-              <span class="d-block">@username</span>
-            </div>
-          </div>
-          <div class="media text-muted pt-3">
-            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <strong class="text-gray-dark">Full Name</strong>
-                <a href="#">Follow</a>
-              </div>
-              <span class="d-block">@username</span>
-            </div>
-          </div>
-          <small class="d-block text-right mt-3">
-            <a href="#">All suggestions</a>
-          </small>
+          <span class="d-block">@username</span>
         </div>
-      </main>
-    
-  
+      </div>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <strong class="text-gray-dark">Full Name</strong>
+            <a href="#">Follow</a>
+          </div>
+          <span class="d-block">@username</span>
+        </div>
+      </div>
+      <small class="d-block text-right mt-3">
+        <a href="#">All suggestions</a>
+      </small>
+    </div>
+  </main>
+
+
 
 
 
@@ -134,7 +167,7 @@
   <footer id="footer">
     <h3>Find the Joy of Learning piano's Life Today.</h3>
     <p>made by ECONOVATION TEAM youngDev</p>
-    <p>© Copyright 2020 pianotutoring</p>  
+    <p>© Copyright 2020 pianotutoring</p>
   </footer>
 
 

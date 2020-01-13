@@ -31,32 +31,28 @@
     crossorigin="anonymous"></script>
 
   <script>
-    function upload() {
+    function update(post_id) {
       var title_value = document.querySelector("#post_title").value;
       var description_value = document.querySelector("#description").value;
       var path_value = document.querySelector("#file-upload1").value;
-
-      if (!title_value) {
-        alert("제목을 입력하세요");
-      } else if (!description_value) {
-        alert("내용을 입력하세요");
-      } else {
-        axios
-          .post("/upload", {
-            title: title_value,
-            description: description_value,
-            video_path: path_value
-          })
-          .then(function (result) {
-            if (result.status === 200) window.location.href = "/community";
-          })
-          .catch(function (error) {
-            alert(error.message);
-          });
-      }
+      console.log(`변경된 값들: ${title_value}, ${description_value}, ${path_value}`);
+      var url = `/update?post_id=${post_id}`;
+      axios
+        .post(url, {
+          title: title_value,
+          description: description_value,
+          video_path: path_value
+        })
+        .then(function (result) {
+          if (result.status === 200) window.location.href = "/community";
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
+      // }
     }
   </script>
-
+  <!-- 
   <script type="text/javascript" src="jquery.min.js" charset="euc-kr"></script>
   <script type="text/javascript">
     fuction LoadImg(value) {
@@ -68,12 +64,13 @@
         reader.readAsDataURL(value.files[0]);
       }
     }
-  </script>
+  </script> -->
 
 </head>
 
 <body>
-
+  <script>
+  </script>
   <section id="title">
     <div class="container-fluid">
 
@@ -120,30 +117,33 @@
 
         <div class="col">
 
-          <h1>Create post</h1>
+          <h1>Modify post</h1>
 
           <form action="" method="POST">
 
             <div class="form-group">
               <label for="title">Title</label>
-              <input id="post_title" type="text" class="form-control" name="title" />
+              <input id="post_title" type="text" class="form-control" name="title" value="<%=post[0].title%>" />
             </div>
 
             <div class="form-group">
               <label for="description">Description</label>
-              <textarea id="description" rows="5" class="form-control" name="description"></textarea>
+              <textarea id="description" rows="5" class="form-control"
+                name="description"><%=post[0].description%></textarea>
             </div>
 
           </form>
 
-          <input id="file-upload1" class="fill-upload" type="file" onchange="LoadImg(this);" />
+          <input id="file-upload1" class="fill-upload" type="file""
+            placeholder=" <%=post[0].video_path%>" onchange="LoadImg(this);" />
           <img id="LoadImg">
 
           <span>
             <div class="container" style="display: inline; margin-left: -100px;">
               <div class="row" style="display: inline;">
                 <div class="col-md-12" style="display: inline;">
-                  <button type="button" class="btn btn-labeled btn-dark" onclick="upload()">Submit</button>
+                  <button type="button" class="btn btn-labeled btn-dark"
+                    onclick="update(<%=post[0].post_id%>)">Modify</button>
                 </div>
               </div>
             </div>

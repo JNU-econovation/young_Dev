@@ -248,6 +248,78 @@ app.get("/post-page", (req, res) => {
   });
 });
 
+app.get("/posting", (req, res) => {
+  const pid = req.query.post_id;
+  var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
+  connection.query(SELECT_POSTING_QUERY, (err, result) => {
+    console.log(result)
+    if (err) {
+      return res.send(err);
+    } else {
+      res.render("posting", {
+        login_state: req.session.logined,
+        user_email: req.session.user_email,
+        user_name: req.session.user_name,
+        post: result
+      })
+    }
+  })
+});
+
+app.post("/upload", (req, res) => {
+  console.log(req);
+  var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.video_path}');`;
+
+  connection.query(INSERT_POST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      return res.status(200).end();
+    }
+  });
+});
+
+app.get("/modify-page", (req, res) => {
+  var pid = req.query.post_id;
+  var SELECT_ONPOST_QUERY = `SELECT * from posting WHERE post_id=${pid};`;
+  connection.query(SELECT_ONPOST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      console.log(result);
+      res.render("modify-page", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        post: result
+      });
+    }
+  });
+});
+
+app.post("/update", (req, res) => {
+  var pid = req.query.post_id;
+  var UPDATE_ONPOST_QUERY = `UPDATE posting SET title='${req.body.title}',description='${req.body.description}',video_path='${req.body.video_path}' WHERE post_id=${pid};`;
+  connection.query(UPDATE_ONPOST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.status(200).end();
+    }
+  })
+});
+
+app.post("/destroy", (req, res) => {
+  var pid = req.query.post_id;
+  var DESTROY_ONPOST_QUERY = `DELETE FROM posting WHERE post_id=${pid}`;
+  connection.query(DESTROY_ONPOST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.status(200).end();
+    }
+  })
+})
+
 app.get("/lecture-playing", (req, res) => {
   res.render("lecture-playing", {
     login_state: req.session.logined,
