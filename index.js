@@ -14,12 +14,17 @@ const app = express();
 const http = require("http").Server(app);
 app.use("/contents", express.static("./contents"));
 app.use(
-  "/views/examples/conference",
-  express.static("./views/examples/conference")
+  "/views/conference",
+  express.static("./views/conference")
 );
 
 // Routes ======================================================================
-require("./controllers/route.js")(app);
+// require("./controllers/route.js")(app);
+app.get('/conference', (req, res) => {
+      res.render('conference/index.ejs', {
+        title: 'Streaming Lesson',
+      });
+    })
 
 // Socket.io ======================================================================
 require("./controllers/socket.js")(http);
