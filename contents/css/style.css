@@ -68,7 +68,6 @@ code {
 #content {
   padding: 80px 30px;
   min-height: 350px;
-  border-bottom: solid 1px #ebebeb;
 }
 #logo-webrtc {
   display: block;
@@ -96,7 +95,7 @@ code {
 }
 .two-peace:after {
   display: block;
-  content: '';
+  content: "";
   clear: both;
 }
 
@@ -121,7 +120,7 @@ button {
   border: none;
   border-radius: 2px;
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1em;
   cursor: pointer;
 }
