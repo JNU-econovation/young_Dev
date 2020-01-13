@@ -4,14 +4,13 @@ const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
-const https = require("https");
 
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
 ////////for webRTC//////////
-const http = require("http").Server(app);
+const https = require("https").Server(app);
 app.use("/contents", express.static("./contents"));
 app.use("/views/conference", express.static("./views/conference"));
 
@@ -24,7 +23,7 @@ app.get("/webRTC", (req, res) => {
 });
 
 // Socket.io ======================================================================
-require("./controllers/socket.js")(http);
+require("./controllers/socket.js")(https);
 
 ////////////////////////////
 
@@ -295,8 +294,3 @@ https
 // app.listen(4000, () => {
 //   console.log(`Young's server listening on port 4000`);
 // });
-
-// RTC Server listen
-http.listen(4000, () => {
-  console.log("WebRTC Lab server running at port 4000");
-});
