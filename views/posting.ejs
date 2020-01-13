@@ -29,47 +29,20 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
-
   <script>
-    function upload() {
-      var title_value = document.querySelector("#post_title").value;
-      var description_value = document.querySelector("#description").value;
-      var path_value = document.querySelector("#file-upload1").value;
-
-      if (!title_value) {
-        alert("제목을 입력하세요");
-      } else if (!description_value) {
-        alert("내용을 입력하세요");
-      } else {
-        axios
-          .post("/upload", {
-            title: title_value,
-            description: description_value,
-            video_path: path_value
-          })
-          .then(function (result) {
-            if (result.status === 200) window.location.href = "/community";
-          })
-          .catch(function (error) {
-            alert(error.message);
-          });
-      }
+    function Destroy(pid) {
+      var url = `/destroy?post_id=${pid}`;
+      axios
+        .post(url, {
+        })
+        .then(function (result) {
+          if (result.status === 200) window.location.href = "/community";
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
     }
   </script>
-
-  <script type="text/javascript" src="jquery.min.js" charset="euc-kr"></script>
-  <script type="text/javascript">
-    fuction LoadImg(value) {
-      if (values.files && value.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          $('#LoadImg').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(value.files[0]);
-      }
-    }
-  </script>
-
 </head>
 
 <body>
@@ -119,35 +92,42 @@
       <div class="row">
 
         <div class="col">
+          <div class="form-group">
+            <label for="title">Title
+              <%= post[0].title %></label>
+          </div>
 
-          <h1>Create post</h1>
+          <div class="form-group">
+            <label for="title">Author
+              <%= post[0].user_name %></label>
+          </div>
 
-          <form action="" method="POST">
+          <div class="form-group">
+            <label for="description">Description
+              <p>
+                <%= post[0].description %>
+              </p>
+            </label>
+          </div>
 
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input id="post_title" type="text" class="form-control" name="title" />
-            </div>
+          <% if(post[0].video_path.length!=0) { %>
+          <div class="form-group">
+            <video width="700" height="500" controls style="margin-bottom: 50px;" autoplay preload="auto">
+              <source src="<%= post[0].video_path %>" type="video/mp4">
+              <source src="<%= post[0].video_path %>" type="video/ogg">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <% } %>
 
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea id="description" rows="5" class="form-control" name="description"></textarea>
-            </div>
-
-          </form>
-
-          <input id="file-upload1" class="fill-upload" type="file" onchange="LoadImg(this);" />
-          <img id="LoadImg">
-
-          <span>
-            <div class="container" style="display: inline; margin-left: -100px;">
-              <div class="row" style="display: inline;">
-                <div class="col-md-12" style="display: inline;">
-                  <button type="button" class="btn btn-labeled btn-dark" onclick="upload()">Submit</button>
-                </div>
-              </div>
-            </div>
-          </span>
+          <div>
+            <% if (post[0].user_email == user_email) { %>
+            <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+              onclick="window.location.href='/modify-page?post_id=<%= post[0].post_id %>'">Modify</button>
+            <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+              onclick="Destroy(<%= post[0].post_id %>)">Delete</button>
+            <% } %>
+          </div>
 
         </div>
 
