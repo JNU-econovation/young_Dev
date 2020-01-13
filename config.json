@@ -1,6 +1,6 @@
 {
   "webserver": {
-    "host": "localhost",
+    "host": "https://pianotutoring.econovation.kr",
     "port": 4000
   }
 }
