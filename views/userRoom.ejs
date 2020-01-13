@@ -206,6 +206,7 @@
       }
 
       function signOut() {
+        login_state = false;
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function() {
           console.log("User signed out.");
@@ -229,65 +230,72 @@
             alert(error.message);
           });
       }
-    </script>
 
-    <main id="board" role="main" class="container">
+      function gotoTP(tutor_id) {
+        var url = `/tutors-profile?tutor_id=${tutor_id}`;
+          axios
+            .get(url, {
+            })
+            .then(function(result) {
+              window.location.href = url;
+            })
+            .catch(function(error) {
+              alert(error.message);
+            });
+      }
+
+      function gotoSP(song_id) {
+        console.log(song_id);
+        var url = `/songs-profile?song_id=${song_id}`;
+        console.log(url);
+        axios
+          .get(url, {
+          })
+          .then(function(result) {
+            window.location.href = url;
+          })
+          .catch(function(error) {
+            alert(error.message);
+          });
+      }
+    </script>
+    <% if(login_state) { %>
+      <main id="board" role="main" class="container">
         
         <div class="my-3 p-3 bg-white rounded shadow-sm">
           
           <h6 class="border-bottom border-gray pb-2 mb-0">Tutors list</h6>
+          <% tutor_information.forEach(function(tutor){ %>
           <div class="media text-muted pt-3"></div>
           <div class="d-flex justify-content-between align-items-center w-100">
-            <img src="images/lady-img.png" width="100" height="100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">lecture</a>
+            <img src=<%= tutor.profile_image %> width="100" height="100">
+            <strong class="text-gray-dark">[<%= tutor.tutor_name %>] <%= tutor.description1 %></strong>
+            <button onclick="gotoTP(<%= tutor.tutor_id %>)">lecture</button>
           </div>
-          
+          <% }) %>
+
           <small class="d-block text-right mt-3">
-            <a href="#">All updates</a>
+            <a href="/tutors">All updates</a>
           </small>
         </div>
   
         <div class="my-3 p-3 bg-white rounded shadow-sm">
           <h6 class="border-bottom border-gray pb-2 mb-0">Songs list</h6>
-          <div class="media text-muted pt-3">
-            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <img src="images/lady-img.png" width="100" height="100">
-                <strong class="text-gray-dark">Full Name</strong>
-                <a href="#">lecture</a>
-              </div>
-              
+          <% song_information.forEach(function(song){ %>
+            <div class="media text-muted pt-3"></div>
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <img src=<%= song.song_image %> width="100" height="100">
+              <strong class="text-gray-dark">[<%= song.song_name %>] <%= song.description1 %></strong>
+              <% var url = `/songs-profile?tutor_id=${song.tutor_id}`; %>
+              <button onclick="gotoSP(<%= song.song_id %>)">lecture</button>
             </div>
-          </div>
-          <div class="media text-muted pt-3">
-            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <img src="images/lady-img.png" width="100" height="100">
-                <strong class="text-gray-dark">Full Name</strong>
-                <a href="#">lecture</a>
-              </div>
-              
-            </div>
-          </div>
-          <div class="media text-muted pt-3">
-            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <img src="images/lady-img.png" width="100" height="100">
-                <strong class="text-gray-dark">Full Name</strong>
-                <a href="#">lecture</a>
-              </div>
-              
-            </div>
-          </div>
+            <% }) %>
           <small class="d-block text-right mt-3">
-            <a href="#">Other songs</a>
+            <a href="songs">Other songs</a>
           </small>
         </div>
-      </main>
+    <% } %>
+    
     
   
 

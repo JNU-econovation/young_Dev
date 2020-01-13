@@ -111,8 +111,12 @@
 	  		<div class="col-md-6">
 	  			<div class="bio-content">
 	  				<h1>I'm <%=tutor_info[0].tutor_name%></h1>
-	  				<h6><%=tutor_info[0].long_description %></h6>
-            <button type="button" class="btn btn-outline-light btn-lg download-button" onclick="enroll_tutor(<%= tutor_info[0].tutor_id %>);">Enroll</button>
+            <h6><%=tutor_info[0].long_description %></h6>
+            <% if(!isEnrolled.length) { %>
+              <button type="button" class="btn btn-dark btn-lg btn-lg download-button" onclick="enroll_tutor(<%= tutor_info[0].tutor_id %>);">Enroll</button>
+            <% } else { %>
+              <button type="button" class="btn btn-dark btn-lg btn-lg download-button" onclick="window.location.href='webRTC'">Start Streaming Lesson!</button>
+            <% } %>
 	  			</div>
 	  		</div>
 	  	</div>	

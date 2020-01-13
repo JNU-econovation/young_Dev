@@ -103,7 +103,7 @@
 	  			<div class="row">
 	  				<div class="col-md-12">
 	  					<div class="bio-image">
-	  						<img src= <%=song_info[0].song_image%> alt="image" />
+	  						<img src= <%=song_info[0].song_image%> alt=<%=song_info[0].song_image%> />
 	  					</div>			
 	  				</div>
 	  			</div>	
@@ -111,8 +111,10 @@
 	  		<div class="col-md-6">
 	  			<div class="bio-content">
 	  				<h1><%=song_info[0].song_name%></h1>
-	  				<h6><%=song_info[0].artist %></h6>
-            <button type="button" class="btn btn-outline-light btn-lg download-button" onclick="enroll_song(<%= song_info[0].song_id %>);">Enroll</button>
+            <h6><%=song_info[0].artist %></h6>
+            <% if(!isEnrolled.length) { %>
+              <button type="button" class="btn btn-dark btn-lg btn-lg download-button" onclick="enroll_song(<%= song_info[0].song_id %>)">Enroll</button>
+            <% } %>
 	  			</div>
 	  		</div>
 	  	</div>	
