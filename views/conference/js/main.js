@@ -1,9 +1,3 @@
-/*!
- *
- * WebRTC Lab
- * @author dodortus (dodortus@gmail.com / codejs.co.kr)
- *
- */
 $(function() {
   console.log("Loaded Main");
 
