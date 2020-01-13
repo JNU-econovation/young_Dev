@@ -15,7 +15,7 @@ const app = express();
 // const http = require("http").Server(app);
 
 // 리모트 테스트용
-const https = require("https").Server(app);
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
