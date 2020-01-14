@@ -363,27 +363,6 @@ app.get("/lectures", (req, res) => {
 });
 
 
-https
-  .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
-    app,
-    fileServer.serve(req, res),
-    require("./controllers/socket.js")(https)
-  )
-  .listen(4000, () => {
-    console.log(`Young's server listening on port 4000`);
-  });
-
 // http.listen(4000, () => {
 //   require("./controllers/socket.js")(http);
 //   console.log(`Young's server listening on port 4000`);
@@ -460,3 +439,25 @@ io.sockets.on('connection', function (socket) {
 // http.listen(4000, () => {
 //   console.log(`Young's server listening on port 4000`);
 // });
+
+
+https
+  .createServer(
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
+    app,
+    fileServer.serve(req, res),
+    require("./controllers/socket.js")(https)
+  )
+  .listen(4000, () => {
+    console.log(`Young's server listening on port 4000`);
+  });
