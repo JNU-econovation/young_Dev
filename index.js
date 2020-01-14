@@ -357,6 +357,10 @@ app.get("/lectures", (req, res) => {
 });
 
 
+const https = require("https").createServer(app, function (req, res) {
+  fileServer.serve(req, res);
+});
+
 https
   .createServer(
     {
@@ -370,18 +374,13 @@ https
         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
       )
     },
-    app
+    app,
+
+    require("./controllers/socket.js")(https)
   )
   .listen(4000, () => {
     console.log(`Young's server listening on port 4000`);
   });
-
-
-// Socket.io ======================================================================
-
-const https = require("https").createServer(app, function (req, res) {
-  fileServer.serve(req, res);
-});
 
 // http.listen(4000, () => {
 //   require("./controllers/socket.js")(http);
@@ -458,6 +457,6 @@ io.sockets.on('connection', function (socket) {
 
 //////////////////////////////////////////////////////////////////
 
-http.listen(4000, () => {
-  console.log(`Young's server listening on port 4000`);
-});
+// http.listen(4000, () => {
+//   console.log(`Young's server listening on port 4000`);
+// });
