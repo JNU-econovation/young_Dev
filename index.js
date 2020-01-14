@@ -32,6 +32,8 @@ app.get("/webRTC", (req, res) => {
 
 ////////////////////////////
 
+
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -353,6 +355,13 @@ app.get("/lectures", (req, res) => {
     }
   });
 });
+
+//////////rtc peerconection 시도////////////
+// app.get("/src/content/peerconnection/upgrade/", (req, res) => {
+//   res.render("src/content/peerconnection/upgrade/index")
+// })
+///////////////////////////////////////////
+
 
 // https
 //   .createServer(
