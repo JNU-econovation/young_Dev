@@ -11,11 +11,11 @@ const app = express();
 
 ////////for webRTC//////////
 
-//로컬 테스트용
-// const http = require("http").Server(app);
+// 로컬 테스트용
+
 
 // 리모트 테스트용
-const https = require("https");
+// const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -29,9 +29,6 @@ app.get("/webRTC", (req, res) => {
     title: "Streaming Lesson"
   });
 });
-
-// Socket.io ======================================================================
-require("./controllers/socket.js")(https);
 
 ////////////////////////////
 
@@ -138,20 +135,25 @@ app.get("/tutors", (req, res) => {
 
 app.get("/tutors-profile", (req, res) => {
   const tid = req.query.tutor_id;
-  const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id='${tid}'`;
-  var FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}' and tutor_id='${tid}'`;
+  const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id=${tid}`;
+  const FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}' and tutor_id=${tid}`;
+  const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
   connection.query(SELECT_TUTOR_MOREINFO_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
-      connection.query(FIND_ENROLL_TUTOR_QUERY, (err, result2) => {
+      connection.query(FIND_ENROLL_TUTOR_QUERY, (err2, result2) => {
         console.log("isEnrolled: ", result2);
-        res.render("tutors-profile", {
-          login_state: req.session.logined,
-          user_name: req.session.user_name,
-          tutor_info: result,
-          isEnrolled: result2
-        });
+        connection.query(SELECT_TUTOR_LECTURE_QUERY, (err3, result3) => {
+          console.log(result3);
+          res.render("tutors-profile", {
+            login_state: req.session.logined,
+            user_name: req.session.user_name,
+            tutor_info: result,
+            isEnrolled: result2,
+            lectures: result3
+          });
+        })
       });
     }
   });
@@ -352,25 +354,34 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-https
-  .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
-    app
-  )
-  .listen(4000, () => {
-    console.log(`Young's server listening on port 4000`);
-  });
+// https
+//   .createServer(
+//     {
+//       key: fs.readFileSync(
+//         "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+//       ),
+//       cert: fs.readFileSync(
+//         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+//       ),
+//       ca: fs.readFileSync(
+//         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+//       )
+//     },
+//     app
+//   )
+//   .listen(4000, () => {
+//     console.log(`Young's server listening on port 4000`);
+//   });
+
+
+// Socket.io ======================================================================
+
+const http = require("http").createServer(app)
+
+http.listen(4000, () => {
+  require("./controllers/socket.js")(http);
+  console.log(`Young's server listening on port 4000`);
+})
 
 // http.listen(4000, () => {
-//   console.log(`Young's server listening on port 4000`);
 // });

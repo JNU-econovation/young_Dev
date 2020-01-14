@@ -30,7 +30,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: #808080;
+  color: #ffffff;
 }
 
 /* navigation bar */
@@ -46,11 +46,13 @@ a:hover {
 
 .nav-item {
   padding: 0 18px;
+  color: #808080;
 }
 
 .nav-link {
   font-size: 1.2rem;
   font-family: "montserrat-light";
+  color: #808080;
 }
 .login-button {
   color: #808080;

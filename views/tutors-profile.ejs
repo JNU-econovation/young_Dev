@@ -4,13 +4,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="google-signin-scope" content="profile email">
-    <meta
-      name="google-signin-client_id"
-      content="261543698673-t61eandlv2u4fcomusf0omtti4efutov.apps.googleusercontent.com"
-    >
-    <script src="https://apis.google.com/js/platform.js?onload=onload" async defer></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <meta name="google-signin-client_id"
+    content="261543698673-t61eandlv2u4fcomusf0omtti4efutov.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js?onload=onload" async defer></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    function secondsToTime(lectures) {
+      for (var i = 1; i <= lectures.length; i++) {
+        var second = document.querySelector(`"#{i}"`).duration;
+        var lengthString = document.querySelector(`"#time{i}"`);
 
+        var date = new Date(null);
+        date.setSeconds(seconds);
+        var timeString = date.toISOString.substr(11, 8);
+        lengthString.innerHTML = timeString;
+        console.log(timeString);
+      }
+    }
+  </script>
   <title>Piano Tutoring</title>
 
 
@@ -22,39 +33,45 @@
   <script src="https://kit.fontawesome.com/e156ac3480.js" crossorigin="anonymous"></script>
 
   <!-- bootstrap css -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="css/tutors-profile.css" />
 
   <!-- bootstrap Javascript, jQuery-->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
   <script>
     function enroll_tutor(tutor_id) {
       console.log(tutor_id);
-        axios
-          .post("/enroll_tutor", {
-            tid : tutor_id
-          })
-          .then(function(result) {
-            if (result.status === 200) window.location.href = "/tutors";
-          })
-          .catch(function(error) {
-            alert(error.message);
-          });
-      }
+      axios
+        .post("/enroll_tutor", {
+          tid: tutor_id
+        })
+        .then(function (result) {
+          if (result.status === 200) window.location.href = "/tutors";
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
+    }
   </script>
   <style>
-  #customBtn{
-    display: inline-block;
+    #customBtn {
+      display: inline-block;
     }
-  .abcRioButtonBlue .abcRioButtonContentWrapper{
-    background-color: black;
-  }
 
-
+    .abcRioButtonBlue .abcRioButtonContentWrapper {
+      background-color: black;
+    }
   </style>
-  
+
 </head>
 
 <body>
@@ -66,97 +83,84 @@
 
       <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="/">piano tutoring</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav ml-auto">
-            
+
             <li class="nav-item">
-                <% if(login_state) { %>
-                  <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
-                <% } else { %>
-                  <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
-                <% } %>
+              <% if(login_state) { %>
+              <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
+              <% } else { %>
+              <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
+              <% } %>
             </li>
         </div>
 
       </nav>
       <!-- Title -->
-      
+
     </div>
   </section>
-  
+
   <section>
 
-  <div class="container portfolio">
-	  <div class="row">
-	  	<div class="col-md-12">
-	  		<div class="heading">				
-	  			<img src="https://image.ibb.co/cbCMvA/logo.png" />
-	  		</div>
-	  	</div>	
-	  </div>
-	  <div class="bio-info">
-	  	<div class="row">
-	  		<div class="col-md-6">
-	  			<div class="row">
-	  				<div class="col-md-12">
-	  					<div class="bio-image">
-	  						<img src= <%=tutor_info[0].profile_image%> alt="image" />
-	  					</div>			
-	  				</div>
-	  			</div>	
-	  		</div>
-	  		<div class="col-md-6">
-	  			<div class="bio-content">
-	  				<h1>I'm <%=tutor_info[0].tutor_name%></h1>
-            <h6><%=tutor_info[0].long_description %></h6>
-            <% if(!isEnrolled.length) { %>
-              <button type="button" class="btn btn-dark btn-lg btn-lg download-button" onclick="enroll_tutor(<%= tutor_info[0].tutor_id %>);">Enroll</button>
-            <% } else { %>
-              <button type="button" class="btn btn-dark btn-lg btn-lg download-button" onclick="window.location.href='webRTC'">Start Streaming Lesson!</button>
-            <% } %>
-	  			</div>
-	  		</div>
-	  	</div>	
-	  </div>
-</div>
-
-<main id="board" role="main" class="container">
-  
-
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
-      <h6 class="border-bottom border-gray pb-2 mb-0">Course</h6>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">[chapter 1] lecture 1, note theory</strong>
-            <a href="#">move to lecture</a>
+    <div class="container portfolio">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="heading">
+            <img src="https://image.ibb.co/cbCMvA/logo.png" />
           </div>
-          <span class="d-block">00:00:00</span>
         </div>
       </div>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">[chapter 1] lecture 2, playing posture</strong>
-            <a href="#">move to lecture</a>
+      <div class="bio-info">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="bio-image">
+                  <img src=<%=tutor_info[0].profile_image%> alt="image" />
+                </div>
+              </div>
+            </div>
           </div>
-          <span class="d-block">00:00:00</span>
-        </div>
-      </div>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">[chapter 1] lecture 3, start basic pedaling </strong>
-            <a href="#">move to lecture</a>
+          <div class="col-md-6">
+            <div class="bio-content">
+              <h1>I'm <%=tutor_info[0].tutor_name%></h1>
+              <h6><%=tutor_info[0].long_description %></h6>
+              <% if(!isEnrolled.length) { %>
+              <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+                onclick="enroll_tutor(<%= tutor_info[0].tutor_id %>);">Enroll</button>
+              <% } else { %>
+              <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+                onclick="window.location.href='webRTC'">Start Streaming Lesson!</button>
+              <% } %>
+            </div>
           </div>
-          <span class="d-block">00:00:00</span>
         </div>
       </div>
     </div>
-  </main>
+
+    <main id="board" role="main" class="container">
+
+
+      <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Course</h6>
+
+        <% lectures.forEach(function(lecture){ %>
+        <div class="media text-muted pt-3">
+          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">[leture <%=lecture.curriculum_order%>] <%=lecture.lecture_title%></strong>
+              <a href="#">move to lecture</a>
+            </div>
+            <video id="<%=lecture.curriculum_order%>" src="<%=lecture.video_path%>" style="display:none"></video>
+            <span id="time<%=lecture.curriculum_order%>" class="d-block">00:00:00</span>
+          </div>
+        </div>
+        <% }) %>
+
+      </div>
+    </main>
