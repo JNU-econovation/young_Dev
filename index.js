@@ -14,7 +14,7 @@ const app = express();
 // 로컬 테스트용
 
 // 리모트 테스트용
-// const https = require("https");
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -362,9 +362,6 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-const https = require("https").createServer(app, function (req, res) {
-  fileServer.serve(req, res);
-});
 
 https
   .createServer(
@@ -380,7 +377,7 @@ https
       )
     },
     app,
-
+    fileServer.serve(req, res),
     require("./controllers/socket.js")(https)
   )
   .listen(4000, () => {
