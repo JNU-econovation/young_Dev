@@ -9,10 +9,6 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-////////for webRTC//////////
-
-// 로컬 테스트용
-
 // 리모트 테스트용
 const http = require("http");
 app.use("/contents", express.static("./contents"));
@@ -166,6 +162,17 @@ app.post("/enroll_tutor", (req, res) => {
   });
 });
 
+// app.post("/tutors-profile", (req, res) => {
+//   const tid = req.query.tutor_id;
+//   const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
+//   connection.query(SELECT_TUTOR_LECTURE_QUERY, (err, result) => {
+//     if (err) { res.send(err); } else {
+//       res.write({ list: result }).send;
+//     }
+//   });
+
+// });
+
 app.get("/songs", (req, res) => {
   const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
   connection.query(SELECT_SONG_INFO_QUERY, (err, result) => {
@@ -247,13 +254,6 @@ app.get("/post-page", (req, res) => {
 });
 
 app.get("/postingnew", (req, res) => {
-  res.render("postingnew", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
-  });
-});
-
-app.get("/posting", (req, res) => {
   const pid = req.query.post_id;
   var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
   connection.query(SELECT_POSTING_QUERY, (err, result) => {
@@ -261,7 +261,7 @@ app.get("/posting", (req, res) => {
     if (err) {
       return res.send(err);
     } else {
-      res.render("posting", {
+      res.render("postingnew", {
         login_state: req.session.logined,
         user_email: req.session.user_email,
         user_name: req.session.user_name,

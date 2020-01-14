@@ -29,19 +29,19 @@
     crossorigin="anonymous"></script>
   <script>
 
-    function gotoPP(post_id) {
-      var url = `/posting?post_id=${post_id}`;
-      console.log(url);
-      axios
-        .get(url, {
-        })
-        .then(function (result) {
-          window.location.href = url;
-        })
-        .catch(function (error) {
-          alert(error.message);
-        });
-    }
+    // function gotoPP(post_id) {
+    //   var url = `/postingnew?post_id=${post_id}`;
+    //   console.log(url);
+    //   axios
+    //     .get(url, {
+    //     })
+    //     .then(function (result) {
+    //       window.location.href = url;
+    //     })
+    //     .catch(function (error) {
+    //       alert(error.message);
+    //     });
+    // }
 
   </script>
 </head>
@@ -104,7 +104,7 @@
         <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
           <strong class="d-block text-gray-dark"><%= post.user_name %></strong>
           <label for="post">
-            <a href="/posting?post_id=<%= post.post_id %>" onclick=gotoPP(<%= post.post_id %>)>
+            <a href="/postingnew?post_id=<%= post.post_id %>">
               <strong><%= post.title %></strong> <br>
               <%= post.description %>
             </a>
