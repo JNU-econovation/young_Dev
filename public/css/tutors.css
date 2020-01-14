@@ -1,12 +1,14 @@
 #title {
   background-color: #000000;
   color: #fff;
-  height: auto;
 }
 
 .container-fluid {
   height: auto;
   padding: 3% 15%;
+}
+.mastheadtitle {
+  padding-bottom: 4rem;
 }
 
 h1 {
