@@ -52,8 +52,8 @@ app.set("view options", { layout: false });
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "young",
-  password: "pianotutoring",
+  user: "root",
+  password: "sjdlssj102030",
   database: "piano_tutoring"
 });
 
@@ -244,6 +244,13 @@ app.get("/community", (req, res) => {
 
 app.get("/post-page", (req, res) => {
   res.render("post-page", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
+});
+
+app.get("/postingnew", (req, res) => {
+  res.render("postingnew", {
     login_state: req.session.logined,
     user_name: req.session.user_name
   });
