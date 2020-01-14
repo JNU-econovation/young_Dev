@@ -54,8 +54,8 @@ app.set("view options", { layout: false });
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "sjdlssj102030",
+  user: "young",
+  password: "pianotutoring",
   database: "piano_tutoring"
 });
 
@@ -376,7 +376,7 @@ app.get("/step5", (req, res) => {
 });
 
 
-var https = https
+var h = https
   .createServer(
     {
       key: fs.readFileSync(
@@ -389,15 +389,15 @@ var https = https
         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
       )
     },
-    app,
-    fileServer.serve(req, res),
-    require("./controllers/socket.js")(https)
+    app, (req, res) => {
+    fileServer.serve(req, res);
+    }	    
   )
   .listen(4000, () => {
     console.log(`Young's server listening on port 4000`);
   });
 
-var io = socketIO.listen(https);
+var io = socketIO.listen(h);
 io.sockets.on('connection', function (socket) {
 
   // convenience function to log server messages on the client
