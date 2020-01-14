@@ -66,11 +66,6 @@ connection.connect(err => {
     console.log("Connected to the MySQL server");
   }
 });
-
-let login_state = false;
-let user_email;
-let user_name;
-
 app.use(express.static("public"));
 app.use(cors());
 
@@ -390,8 +385,8 @@ var h = https
       )
     },
     app, (req, res) => {
-    fileServer.serve(req, res);
-    }	    
+      fileServer.serve(req, res);
+    }
   )
   .listen(4000, () => {
     console.log(`Young's server listening on port 4000`);
@@ -409,7 +404,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('message', function (message) {
     log('Client said: ', message);
-    // for a real app, would be room-only (not broadcast)
+    // for a real app, would be room-only (not broadcast) -> 아마 socket.join과 leave?
     socket.broadcast.emit('message', message);
   });
 
@@ -453,11 +448,6 @@ io.sockets.on('connection', function (socket) {
 })
 
 //////////////////////////////////////////////////////////////////
-
-// http.listen(4000, () => {
-//   console.log(`Young's server listening on port 4000`);
-// });
-
 
 // http.listen(4000, () => {
 //   require("./controllers/socket.js")(http);
