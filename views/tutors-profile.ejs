@@ -9,6 +9,17 @@
   <script src="https://apis.google.com/js/platform.js?onload=onload" async defer></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
+
+    // var url = `/bring_list_t?tutor_id=${tutor_id}`;
+    // url = window.location.href;
+    // axios.post(url, {
+    // }).then(function (res) {
+    //   console.log(res);
+    //   secondsToTime(res[0].list);
+    // }).catch(function (error) {
+    //   alert(error.message);
+    // });
+
     function secondsToTime(lectures) {
       for (var i = 1; i <= lectures.length; i++) {
         var second = document.querySelector(`"#{i}"`).duration;
@@ -130,17 +141,19 @@
             <div class="bio-content">
               <h1>I'm <%=tutor_info[0].tutor_name%></h1>
               <h6><%=tutor_info[0].long_description %></h6>
-              <% if(!isEnrolled.length) { %>
+              <% if(login_state & isEnrolled.length) { %>
+              <!--로그인도 되어있고, 등록도 한 경우-->
+              <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+                onclick="window.location.href='pureWebRTC'">Start Streaming Lesson!</button>
+              <!-- <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+                onclick="window.location.href='https://appr.tc/'">Start Streaming Lesson!</button> -->
+              <% } else if (login_state & !isEnrolled.length ){ %>
+              <!--로그인은 되어있는데, 등록을 안한 경우-->
               <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
                 onclick="enroll_tutor(<%= tutor_info[0].tutor_id %>);">Enroll</button>
               <% } else { %>
-              <!-- <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
-                onclick="window.location.href='webRTC'">Start Streaming Lesson!</button> -->
               <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
-                onclick="window.location.href='https://appr.tc/'">Start Streaming Lesson!</button>
-              <!-- <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
-                onclick="window.location.href='/src/content/peerconnection/upgrade/'">Start Streaming -->
-              Lesson!</button>
+                onclick="window.location.href='userRoom'">Enroll</button>
               <% } %>
             </div>
           </div>

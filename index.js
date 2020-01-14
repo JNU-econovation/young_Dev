@@ -9,12 +9,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-////////for webRTC//////////
-
-// 로컬 테스트용
-
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -166,6 +162,17 @@ app.post("/enroll_tutor", (req, res) => {
   });
 });
 
+// app.post("/tutors-profile", (req, res) => {
+//   const tid = req.query.tutor_id;
+//   const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
+//   connection.query(SELECT_TUTOR_LECTURE_QUERY, (err, result) => {
+//     if (err) { res.send(err); } else {
+//       res.write({ list: result }).send;
+//     }
+//   });
+
+// });
+
 app.get("/songs", (req, res) => {
   const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
   connection.query(SELECT_SONG_INFO_QUERY, (err, result) => {
@@ -247,13 +254,6 @@ app.get("/post-page", (req, res) => {
 });
 
 app.get("/postingnew", (req, res) => {
-  res.render("postingnew", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
-  });
-});
-
-app.get("/posting", (req, res) => {
   const pid = req.query.post_id;
   var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
   connection.query(SELECT_POSTING_QUERY, (err, result) => {
@@ -261,7 +261,7 @@ app.get("/posting", (req, res) => {
     if (err) {
       return res.send(err);
     } else {
-      res.render("posting", {
+      res.render("postingnew", {
         login_state: req.session.logined,
         user_email: req.session.user_email,
         user_name: req.session.user_name,
@@ -360,29 +360,29 @@ app.get("/lectures", (req, res) => {
 
 
 /////////////////////////step5 test///////////////////////////////
-//예제코드에서 app 대신 http써보기
+//예제코드에서 app 대신 h써보기
 var os = require('os');
 var nodeStatic = require('node-static');
 var socketIO = require('socket.io');
 var fileServer = new (nodeStatic.Server)();
 
-app.get("/step5", (req, res) => {
-  res.render("step5");
+app.get("/pureWebRTC", (req, res) => {
+  res.render("pureWebRTC");
 });
 
 
-var h = https
+var h = http
   .createServer(
     {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
+      // key: fs.readFileSync(
+      //   "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      // ),
+      // cert: fs.readFileSync(
+      //   "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      // ),
+      // ca: fs.readFileSync(
+      //   "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      // )
     },
     app, (req, res) => {
       fileServer.serve(req, res);
@@ -404,8 +404,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('message', function (message) {
     log('Client said: ', message);
-    // for a real app, would be room-only (not broadcast) -> 아마 socket.join과 leave?
+    // for a real app, would be room-only (not broadcast)
     socket.broadcast.emit('message', message);
+    // socket.to(sk.id).emit('message', message);
+    // console.log(sk.id);
   });
 
   socket.on('create or join', function (room) {

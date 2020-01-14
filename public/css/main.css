@@ -8,9 +8,7 @@ button#hangupButton {
 }
 
 video {
-  --width: 45%;
-  width: var(--width);
-  height: calc(var(--width) * 0.75);
+  background: #222;
   margin: 0 0 20px 0;
   vertical-align: top;
 }
