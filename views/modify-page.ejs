@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>Piano Tutoring</title>
 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <!-- google fonts Ubuntu, montserrat-->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap" rel="stylesheet">
 
@@ -15,7 +17,7 @@
   <!-- bootstrap css -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/community.css" />
+  <link rel="stylesheet" href="css/post-page.css" />
 
   <!-- bootstrap Javascript, jQuery-->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -27,27 +29,48 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
-  <script>
 
-    function gotoPP(post_id) {
-      var url = `/posting?post_id=${post_id}`;
-      console.log(url);
+  <script>
+    function update(post_id) {
+      var title_value = document.querySelector("#post_title").value;
+      var description_value = document.querySelector("#description").value;
+      var path_value = document.querySelector("#file-upload1").value;
+      console.log(`변경된 값들: ${title_value}, ${description_value}, ${path_value}`);
+      var url = `/update?post_id=${post_id}`;
       axios
-        .get(url, {
+        .post(url, {
+          title: title_value,
+          description: description_value,
+          video_path: path_value
         })
         .then(function (result) {
-          window.location.href = url;
+          if (result.status === 200) window.location.href = "/community";
         })
         .catch(function (error) {
           alert(error.message);
         });
+      // }
     }
-
   </script>
+  <!-- 
+  <script type="text/javascript" src="jquery.min.js" charset="euc-kr"></script>
+  <script type="text/javascript">
+    fuction LoadImg(value) {
+      if (values.files && value.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $('#LoadImg').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(value.files[0]);
+      }
+    }
+  </script> -->
+
 </head>
 
 <body>
-
+  <script>
+  </script>
   <section id="title">
     <div class="container-fluid">
 
@@ -88,79 +111,49 @@
 
   </section>
 
-  <main id="board" role="main" class="container">
+  <section id="post-form">
+    <div class="container">
+      <div class="row">
 
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <div class="col">
 
-      <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates
-        <% if(login_state) { %>
-        <a href="post-page"><i class="far  fa-edit fa-lg"></i></a>
-        <% } %>
-      </h6>
+          <h1>Modify post</h1>
 
-      <% posting.reverse().forEach(function(post){ %>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <strong class="d-block text-gray-dark"><%= post.user_name %></strong>
-          <label for="post">
-            <a href="/posting?post_id=<%= post.post_id %>" onclick=gotoPP(<%= post.post_id %>)>
-              <strong><%= post.title %></strong> <br>
-              <%= post.description %>
-            </a>
-          </label>
-        </p>
+          <form action="" method="POST">
+
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input id="post_title" type="text" class="form-control" name="title" value="<%=post[0].title%>" />
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" rows="5" class="form-control"
+                name="description"><%=post[0].description%></textarea>
+            </div>
+
+          </form>
+
+          <input id="file-upload1" class="fill-upload" type="file""
+            placeholder=" <%=post[0].video_path%>" onchange="LoadImg(this);" />
+          <img id="LoadImg">
+
+          <span>
+            <div class="container" style="display: inline; margin-left: -100px;">
+              <div class="row" style="display: inline;">
+                <div class="col-md-12" style="display: inline;">
+                  <button type="button" class="btn btn-labeled btn-dark"
+                    onclick="update(<%=post[0].post_id%>)">Modify</button>
+                </div>
+              </div>
+            </div>
+          </span>
+
+        </div>
+
       </div>
-      <% }) %>
-
-      <small class="d-block text-right mt-3">
-        <a href="#">All updates</a>
-      </small>
     </div>
-
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
-      <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">Follow</a>
-          </div>
-          <span class="d-block">@username</span>
-        </div>
-      </div>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">Follow</a>
-          </div>
-          <span class="d-block">@username</span>
-        </div>
-      </div>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">Follow</a>
-          </div>
-          <span class="d-block">@username</span>
-        </div>
-      </div>
-      <small class="d-block text-right mt-3">
-        <a href="#">All suggestions</a>
-      </small>
-    </div>
-  </main>
-
-
-
-
-
-
+  </section>
 
   <!-- Footer -->
 

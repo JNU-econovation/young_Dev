@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>Piano Tutoring</title>
 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <!-- google fonts Ubuntu, montserrat-->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap" rel="stylesheet">
 
@@ -15,7 +17,7 @@
   <!-- bootstrap css -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/community.css" />
+  <link rel="stylesheet" href="css/post-page.css" />
 
   <!-- bootstrap Javascript, jQuery-->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -28,21 +30,18 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
   <script>
-
-    function gotoPP(post_id) {
-      var url = `/posting?post_id=${post_id}`;
-      console.log(url);
+    function Destroy(pid) {
+      var url = `/destroy?post_id=${pid}`;
       axios
-        .get(url, {
+        .post(url, {
         })
         .then(function (result) {
-          window.location.href = url;
+          if (result.status === 200) window.location.href = "/community";
         })
         .catch(function (error) {
           alert(error.message);
         });
     }
-
   </script>
 </head>
 
@@ -88,79 +87,53 @@
 
   </section>
 
-  <main id="board" role="main" class="container">
+  <section id="post-form">
+    <div class="container">
+      <div class="row">
 
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <div class="col">
+          <div class="form-group">
+            <label for="title">Title
+              <%= post[0].title %></label>
+          </div>
 
-      <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates
-        <% if(login_state) { %>
-        <a href="post-page"><i class="far  fa-edit fa-lg"></i></a>
-        <% } %>
-      </h6>
+          <div class="form-group">
+            <label for="title">Author
+              <%= post[0].user_name %></label>
+          </div>
 
-      <% posting.reverse().forEach(function(post){ %>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <strong class="d-block text-gray-dark"><%= post.user_name %></strong>
-          <label for="post">
-            <a href="/posting?post_id=<%= post.post_id %>" onclick=gotoPP(<%= post.post_id %>)>
-              <strong><%= post.title %></strong> <br>
-              <%= post.description %>
-            </a>
-          </label>
-        </p>
+          <div class="form-group">
+            <label for="description">Description
+              <p>
+                <%= post[0].description %>
+              </p>
+            </label>
+          </div>
+
+          <% if(post[0].video_path.length!=0) { %>
+          <div class="form-group">
+            <video width="700" height="500" controls style="margin-bottom: 50px;" autoplay preload="auto">
+              <source src="<%= post[0].video_path %>" type="video/mp4">
+              <source src="<%= post[0].video_path %>" type="video/ogg">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <% } %>
+
+          <div>
+            <% if (post[0].user_email == user_email) { %>
+            <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+              onclick="window.location.href='/modify-page?post_id=<%= post[0].post_id %>'">Modify</button>
+            <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+              onclick="Destroy(<%= post[0].post_id %>)">Delete</button>
+            <% } %>
+          </div>
+
+        </div>
+
       </div>
-      <% }) %>
-
-      <small class="d-block text-right mt-3">
-        <a href="#">All updates</a>
-      </small>
     </div>
-
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
-      <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">Follow</a>
-          </div>
-          <span class="d-block">@username</span>
-        </div>
-      </div>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">Follow</a>
-          </div>
-          <span class="d-block">@username</span>
-        </div>
-      </div>
-      <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <strong class="text-gray-dark">Full Name</strong>
-            <a href="#">Follow</a>
-          </div>
-          <span class="d-block">@username</span>
-        </div>
-      </div>
-      <small class="d-block text-right mt-3">
-        <a href="#">All suggestions</a>
-      </small>
-    </div>
-  </main>
-
-
-
-
-
-
+  </section>
 
   <!-- Footer -->
 

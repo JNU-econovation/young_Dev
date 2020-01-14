@@ -4,27 +4,31 @@ const cors = require("cors");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
-const https = require("https");
 
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
 ////////for webRTC//////////
-const http = require("http").Server(app);
+
+// 로컬 테스트용
+
+
+// 리모트 테스트용
+// const https = require("https");
 app.use("/contents", express.static("./contents"));
-app.use("/views/conference", express.static("./views/conference"));
+app.use(
+  "/views/examples/conference",
+  express.static("./views/examples/conference")
+);
 
 // Routes ======================================================================
 // require("./controllers/route.js")(app);
 app.get("/webRTC", (req, res) => {
-  res.render("conference/webRTC.ejs", {
+  res.render("examples/conference/webRTC.ejs", {
     title: "Streaming Lesson"
   });
 });
-
-// Socket.io ======================================================================
-require("./controllers/socket.js")(http);
 
 ////////////////////////////
 
@@ -131,20 +135,25 @@ app.get("/tutors", (req, res) => {
 
 app.get("/tutors-profile", (req, res) => {
   const tid = req.query.tutor_id;
-  const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id='${tid}'`;
-  var FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}' and tutor_id='${tid}'`;
+  const SELECT_TUTOR_MOREINFO_QUERY = `SELECT tutor_id,tutor_name,profile_image,long_description FROM tutor WHERE tutor_id=${tid}`;
+  const FIND_ENROLL_TUTOR_QUERY = `SELECT * from enroll_tutor WHERE user_email='${req.session.user_email}' and tutor_id=${tid}`;
+  const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
   connection.query(SELECT_TUTOR_MOREINFO_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
-      connection.query(FIND_ENROLL_TUTOR_QUERY, (err, result2) => {
+      connection.query(FIND_ENROLL_TUTOR_QUERY, (err2, result2) => {
         console.log("isEnrolled: ", result2);
-        res.render("tutors-profile", {
-          login_state: req.session.logined,
-          user_name: req.session.user_name,
-          tutor_info: result,
-          isEnrolled: result2
-        });
+        connection.query(SELECT_TUTOR_LECTURE_QUERY, (err3, result3) => {
+          console.log(result3);
+          res.render("tutors-profile", {
+            login_state: req.session.logined,
+            user_name: req.session.user_name,
+            tutor_info: result,
+            isEnrolled: result2,
+            lectures: result3
+          });
+        })
       });
     }
   });
@@ -241,6 +250,78 @@ app.get("/post-page", (req, res) => {
   });
 });
 
+app.get("/posting", (req, res) => {
+  const pid = req.query.post_id;
+  var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
+  connection.query(SELECT_POSTING_QUERY, (err, result) => {
+    console.log(result)
+    if (err) {
+      return res.send(err);
+    } else {
+      res.render("posting", {
+        login_state: req.session.logined,
+        user_email: req.session.user_email,
+        user_name: req.session.user_name,
+        post: result
+      })
+    }
+  })
+});
+
+app.post("/upload", (req, res) => {
+  console.log(req);
+  var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.video_path}');`;
+
+  connection.query(INSERT_POST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      return res.status(200).end();
+    }
+  });
+});
+
+app.get("/modify-page", (req, res) => {
+  var pid = req.query.post_id;
+  var SELECT_ONPOST_QUERY = `SELECT * from posting WHERE post_id=${pid};`;
+  connection.query(SELECT_ONPOST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      console.log(result);
+      res.render("modify-page", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        post: result
+      });
+    }
+  });
+});
+
+app.post("/update", (req, res) => {
+  var pid = req.query.post_id;
+  var UPDATE_ONPOST_QUERY = `UPDATE posting SET title='${req.body.title}',description='${req.body.description}',video_path='${req.body.video_path}' WHERE post_id=${pid};`;
+  connection.query(UPDATE_ONPOST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.status(200).end();
+    }
+  })
+});
+
+app.post("/destroy", (req, res) => {
+  var pid = req.query.post_id;
+  var DESTROY_ONPOST_QUERY = `DELETE FROM posting WHERE post_id=${pid}`;
+  connection.query(DESTROY_ONPOST_QUERY, (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.status(200).end();
+    }
+  })
+})
+
 app.get("/lecture-playing", (req, res) => {
   res.render("lecture-playing", {
     login_state: req.session.logined,
@@ -292,6 +373,15 @@ app.get("/lectures", (req, res) => {
 //     console.log(`Young's server listening on port 4000`);
 //   });
 
-app.listen(4000, () => {
+
+// Socket.io ======================================================================
+
+const http = require("http").createServer(app)
+
+http.listen(4000, () => {
+  require("./controllers/socket.js")(http);
   console.log(`Young's server listening on port 4000`);
-});
+})
+
+// http.listen(4000, () => {
+// });

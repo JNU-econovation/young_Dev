@@ -1,9 +1,9 @@
 /**
  * Websocket handler
- * @param http
+ * @param https
  */
-module.exports = http => {
-  const io = require("socket.io")(http);
+module.exports = https => {
+  const io = require("socket.io")(https);
   let rooms = {};
   let roomId = null;
   let socketIds = {};

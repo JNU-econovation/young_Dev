@@ -1,10 +1,4 @@
-/*!
- *
- * WebRTC Lab
- * @author dodortus (dodortus@gmail.com / codejs.co.kr)
- *
- */
-$(function() {
+$(function () {
   console.log("Loaded Main");
 
   let roomId;
@@ -57,7 +51,7 @@ $(function() {
       ].join("\n")
     );
 
-    $("#btn-join").click(function() {
+    $("#btn-join").click(function () {
       isOffer = true;
       peerHandler.getUserMedia(mediaOption, onLocalStream, isOffer);
       $(this).attr("disabled", true);
@@ -143,7 +137,7 @@ $(function() {
    * 클립보드 복사
    */
   function setClipboard() {
-    $uniqueToken.click(function() {
+    $uniqueToken.click(function () {
       const link = location.href;
 
       if (window.clipboardData) {
@@ -216,17 +210,17 @@ $(function() {
     // Peer 관련 이벤트 바인딩
     peerHandler.on("addRemoteStream", onRemoteStream);
 
-    $("#btn-start").click(function() {
+    $("#btn-start").click(function () {
       peerHandler.getUserMedia(mediaOption, onLocalStream);
     });
 
-    $("#btn-camera").click(function() {
+    $("#btn-camera").click(function () {
       const $this = $(this);
       $this.toggleClass("active");
       mediaHandler[$this.hasClass("active") ? "pauseVideo" : "resumeVideo"]();
     });
 
-    $("#btn-mic").click(function() {
+    $("#btn-mic").click(function () {
       const $this = $(this);
       $this.toggleClass("active");
       mediaHandler[$this.hasClass("active") ? "muteAudio" : "unmuteAudio"]();
