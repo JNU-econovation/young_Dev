@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-// const mysql = require("mysql");
+const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
@@ -12,7 +12,6 @@ const app = express();
 ////////for webRTC//////////
 
 // 로컬 테스트용
-
 
 // 리모트 테스트용
 // const https = require("https");
@@ -51,20 +50,20 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "young",
-//   password: "pianotutoring",
-//   database: "piano_tutoring"
-// });
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "young",
+  password: "pianotutoring",
+  database: "piano_tutoring"
+});
 
-// connection.connect(err => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Connected to the MySQL server");
-//   }
-// });
+connection.connect(err => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Connected to the MySQL server");
+  }
+});
 
 let login_state = false;
 let user_email;
@@ -153,7 +152,7 @@ app.get("/tutors-profile", (req, res) => {
             isEnrolled: result2,
             lectures: result3
           });
-        })
+        });
       });
     }
   });
@@ -254,7 +253,7 @@ app.get("/posting", (req, res) => {
   const pid = req.query.post_id;
   var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
   connection.query(SELECT_POSTING_QUERY, (err, result) => {
-    console.log(result)
+    console.log(result);
     if (err) {
       return res.send(err);
     } else {
@@ -263,9 +262,9 @@ app.get("/posting", (req, res) => {
         user_email: req.session.user_email,
         user_name: req.session.user_name,
         post: result
-      })
+      });
     }
-  })
+  });
 });
 
 app.post("/upload", (req, res) => {
@@ -303,11 +302,11 @@ app.post("/update", (req, res) => {
   var UPDATE_ONPOST_QUERY = `UPDATE posting SET title='${req.body.title}',description='${req.body.description}',video_path='${req.body.video_path}' WHERE post_id=${pid};`;
   connection.query(UPDATE_ONPOST_QUERY, (err, result) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
       res.status(200).end();
     }
-  })
+  });
 });
 
 app.post("/destroy", (req, res) => {
@@ -315,12 +314,12 @@ app.post("/destroy", (req, res) => {
   var DESTROY_ONPOST_QUERY = `DELETE FROM posting WHERE post_id=${pid}`;
   connection.query(DESTROY_ONPOST_QUERY, (err, result) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
       res.status(200).end();
     }
-  })
-})
+  });
+});
 
 app.get("/lecture-playing", (req, res) => {
   res.render("lecture-playing", {
@@ -373,15 +372,14 @@ app.get("/lectures", (req, res) => {
 //     console.log(`Young's server listening on port 4000`);
 //   });
 
-
 // Socket.io ======================================================================
 
-const http = require("http").createServer(app)
+const http = require("http").createServer(app);
 
 http.listen(4000, () => {
   require("./controllers/socket.js")(http);
   console.log(`Young's server listening on port 4000`);
-})
+});
 
 // http.listen(4000, () => {
 // });
