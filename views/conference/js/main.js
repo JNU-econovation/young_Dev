@@ -202,6 +202,7 @@ $(function() {
    */
   function initialize() {
     roomId = location.href.replace(/\/|:|#|%|\.|\[|\]/g, "");
+    console.log(roomId);
     userId = Math.round(Math.random() * 99999);
     setRoomToken();
     setClipboard();
