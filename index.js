@@ -363,10 +363,6 @@ app.get("/lectures", (req, res) => {
 });
 
 
-// http.listen(4000, () => {
-//   require("./controllers/socket.js")(http);
-//   console.log(`Young's server listening on port 4000`);
-// })
 
 /////////////////////////step5 test///////////////////////////////
 //예제코드에서 app 대신 http써보기
@@ -378,6 +374,28 @@ var fileServer = new (nodeStatic.Server)();
 app.get("/step5", (req, res) => {
   res.render("step5");
 });
+
+
+var https = https
+  .createServer(
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
+    app,
+    fileServer.serve(req, res),
+    require("./controllers/socket.js")(https)
+  )
+  .listen(4000, () => {
+    console.log(`Young's server listening on port 4000`);
+  });
 
 var io = socketIO.listen(https);
 io.sockets.on('connection', function (socket) {
@@ -441,23 +459,9 @@ io.sockets.on('connection', function (socket) {
 // });
 
 
-https
-  .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
-    app,
-    fileServer.serve(req, res),
-    require("./controllers/socket.js")(https)
-  )
-  .listen(4000, () => {
-    console.log(`Young's server listening on port 4000`);
-  });
+// http.listen(4000, () => {
+//   require("./controllers/socket.js")(http);
+//   console.log(`Young's server listening on port 4000`);
+// })
+
+
