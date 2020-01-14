@@ -14,7 +14,7 @@ const app = express();
 // 로컬 테스트용
 
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -360,29 +360,29 @@ app.get("/lectures", (req, res) => {
 
 
 /////////////////////////step5 test///////////////////////////////
-//예제코드에서 app 대신 http써보기
+//예제코드에서 app 대신 h써보기
 var os = require('os');
 var nodeStatic = require('node-static');
 var socketIO = require('socket.io');
 var fileServer = new (nodeStatic.Server)();
 
-app.get("/step5", (req, res) => {
-  res.render("step5");
+app.get("/pureWebRTC", (req, res) => {
+  res.render("pureWebRTC");
 });
 
 
-var h = https
+var h = http
   .createServer(
     {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
+      // key: fs.readFileSync(
+      //   "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      // ),
+      // cert: fs.readFileSync(
+      //   "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      // ),
+      // ca: fs.readFileSync(
+      //   "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      // )
     },
     app, (req, res) => {
       fileServer.serve(req, res);
@@ -404,8 +404,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('message', function (message) {
     log('Client said: ', message);
-    // for a real app, would be room-only (not broadcast) -> 아마 socket.join과 leave?
+    // for a real app, would be room-only (not broadcast)
     socket.broadcast.emit('message', message);
+    // socket.to(sk.id).emit('message', message);
+    // console.log(sk.id);
   });
 
   socket.on('create or join', function (room) {
