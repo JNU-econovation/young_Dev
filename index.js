@@ -13,8 +13,7 @@ const app = express();
 
 // 로컬 테스트용
 
-
-// 리모트 
+// 리모트 테스트용
 // const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
@@ -55,8 +54,8 @@ app.set("view options", { layout: false });
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "young",
-  password: "pianotutoring",
+  user: "root",
+  password: "sjdlssj102030",
   database: "piano_tutoring"
 });
 
@@ -155,7 +154,7 @@ app.get("/tutors-profile", (req, res) => {
             isEnrolled: result2,
             lectures: result3
           });
-        })
+        });
       });
     }
   });
@@ -252,11 +251,18 @@ app.get("/post-page", (req, res) => {
   });
 });
 
+app.get("/postingnew", (req, res) => {
+  res.render("postingnew", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
+});
+
 app.get("/posting", (req, res) => {
   const pid = req.query.post_id;
   var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
   connection.query(SELECT_POSTING_QUERY, (err, result) => {
-    console.log(result)
+    console.log(result);
     if (err) {
       return res.send(err);
     } else {
@@ -265,9 +271,9 @@ app.get("/posting", (req, res) => {
         user_email: req.session.user_email,
         user_name: req.session.user_name,
         post: result
-      })
+      });
     }
-  })
+  });
 });
 
 app.post("/upload", (req, res) => {
@@ -305,11 +311,11 @@ app.post("/update", (req, res) => {
   var UPDATE_ONPOST_QUERY = `UPDATE posting SET title='${req.body.title}',description='${req.body.description}',video_path='${req.body.video_path}' WHERE post_id=${pid};`;
   connection.query(UPDATE_ONPOST_QUERY, (err, result) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
       res.status(200).end();
     }
-  })
+  });
 });
 
 app.post("/destroy", (req, res) => {
@@ -317,12 +323,12 @@ app.post("/destroy", (req, res) => {
   var DESTROY_ONPOST_QUERY = `DELETE FROM posting WHERE post_id=${pid}`;
   connection.query(DESTROY_ONPOST_QUERY, (err, result) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
       res.status(200).end();
     }
-  })
-})
+  });
+});
 
 app.get("/lecture-playing", (req, res) => {
   res.render("lecture-playing", {
@@ -355,7 +361,6 @@ app.get("/lectures", (req, res) => {
     }
   });
 });
-
 
 const https = require("https").createServer(app, function (req, res) {
   fileServer.serve(req, res);
@@ -452,8 +457,6 @@ io.sockets.on('connection', function (socket) {
     console.log('received bye');
   });
 })
-
-
 
 //////////////////////////////////////////////////////////////////
 

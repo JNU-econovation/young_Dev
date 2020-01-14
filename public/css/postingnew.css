@@ -1,10 +1,15 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css);
+
 #title {
   background-color: #000000;
   color: #fff;
+  height: auto;
 }
 
 .container-fluid {
-  padding: 3% 15%;
+  height: auto;
+  padding: 0% 15%;
 }
 
 h1 {
@@ -25,7 +30,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: #808080;
+  color: #ffffff;
 }
 
 /* navigation bar */
@@ -41,11 +46,13 @@ a:hover {
 
 .nav-item {
   padding: 0 18px;
+  color: #808080;
 }
 
 .nav-link {
   font-size: 1.2rem;
   font-family: "montserrat-light";
+  color: #808080;
 }
 .login-button {
   color: #808080;
@@ -60,9 +67,9 @@ a:hover {
   margin: 5% 3% 5% 0%;
 }
 
-/* masthead */
-#masthead > row {
-  background-image: url(/images/bg-masthead.jpg);
+/* title image */
+.title-image {
+  background-image: url(public/images/bg-masthead.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -118,6 +125,7 @@ h2 {
   font-weight: 600;
   font-size: 3rem;
   line-height: 1.5;
+  color: #ffffff;
 }
 
 .testimonial-image {
@@ -141,16 +149,26 @@ h2 {
   padding: 3% 15%;
 }
 
-/* pricing Section */
+/* tutors Section */
 
-#pricing {
+#tutors {
   padding: 100px;
   text-align: center;
 }
 
-.pricing-column {
+.tutors-column {
   padding: 3% 2%;
   padding-top: 50px;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
+}
+
+.card-body > h2 {
+  color: #000000;
 }
 
 /* songs */
@@ -163,8 +181,22 @@ h2 {
   padding-top: 50px;
 }
 
-.album {
-  background-size: 100% 100%;
+/* jumbotron */
+
+.jumbotron {
+  /* background-image : url("../images/bg-masthead.jpg"); */
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../images/bg-masthead.jpg");
+  background-repeat: no-repeat;
+  height: 100%;
+  background-size: 100%;
+  text-align: center;
+}
+
+#main-header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /*footer*/
@@ -173,25 +205,35 @@ h2 {
   text-align: center;
   padding: 1rem 1rem;
 }
-/* log-in button */
-.align-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.abcRioButtonBlue {
+.fa-edit {
+  display: block;
+  text-align: right;
+}
+#post-form {
   text-align: center;
-  background-color: #000000;
-  border: none;
-  margin: 3rem;
-  color: #fff;
+}
+.row {
+  text-align: center;
+}
+.container {
+  text-align: center;
+  padding: 7rem;
 }
 
-#hide {
-  display: none;
+.btn-label {
+  position: relative;
+  left: -12px;
+  display: inline;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px 0 0 3px;
+  text-align: center;
 }
-
-.pb-2 {
-  text-align: left;
+.btn-labeled {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.btn {
+  margin-bottom: 10px;
 }

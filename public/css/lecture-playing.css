@@ -7,7 +7,7 @@
 }
 
 .container-fluid {
-  padding: 1rem 1rem;
+  padding: 3% 15%
   text-align: center;
 }
 
@@ -41,7 +41,7 @@ a:hover {
 }
 
 .navbar {
-  padding: 1rem 1rem;
+  padding: 0 0 0;
 }
 
 .nav-item {
