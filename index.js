@@ -175,7 +175,7 @@ app.post("/enroll_tutor", (req, res) => {
 //   const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
 //   connection.query(SELECT_TUTOR_LECTURE_QUERY, (err, result) => {
 //     if (err) { res.send(err); } else {
-//       res.write({ list: result }).send;
+//       res.send({ list: result });
 //     }
 //   });
 
@@ -428,8 +428,8 @@ io.sockets.on('connection', function (socket) {
   socket.on('message', function (message, room) {
     log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
-    console.log(room);
-    socket.to(room).broadcast.emit('message', message);
+    console.log("room:", room);
+    socket.broadcast.emit('message', message);
     // socket.to(sk.id).emit('message', message);
     // console.log(sk.id);
   });
