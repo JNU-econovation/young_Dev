@@ -388,11 +388,12 @@ var h = https
       fileServer.serve(req, res);
     }
   )
-  .listen(, () => {
-    console.log(`Young's server listening on port 443`);
+  .listen(4000, () => {
+    console.log(`Young's server listening on port 4000`);
   });
 
 var io = socketIO.listen(h);
+
 io.sockets.on('connection', function (socket) {
 
   // convenience function to log server messages on the client
