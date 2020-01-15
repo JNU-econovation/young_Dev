@@ -4,30 +4,19 @@ const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
+const upload = require("multer");
 
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
   express.static("./views/examples/conference")
 );
-
-// Routes ======================================================================
-// require("./controllers/route.js")(app);
-app.get("/webRTC", (req, res) => {
-  res.render("examples/conference/webRTC.ejs", {
-    title: "Streaming Lesson"
-  });
-});
-
-////////////////////////////
-
-
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -393,19 +382,19 @@ app.get("/pureWebRTC", (req, res) => {
 });
 
 
-var h = https
+var h = http
   .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
+    // {
+    //   key: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+    //   ),
+    //   cert: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   ),
+    //   ca: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   )
+    // },
     app, (req, res) => {
       fileServer.serve(req, res);
     }
