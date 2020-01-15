@@ -4,19 +4,22 @@ const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
+const upload = require("multer");
 
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
   express.static("./views/examples/conference")
 );
 
+<<<<<<< HEAD
+=======
 // Routes ======================================================================
 // require("./controllers/route.js")(app);
 app.get("/webRTC", (req, res) => {
@@ -27,6 +30,7 @@ app.get("/webRTC", (req, res) => {
 
 ////////////////////////////
 
+>>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -173,7 +177,7 @@ app.post("/enroll_tutor", (req, res) => {
 //   const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
 //   connection.query(SELECT_TUTOR_LECTURE_QUERY, (err, result) => {
 //     if (err) { res.send(err); } else {
-//       res.write({ list: result }).send;
+//       res.send({ list: result });
 //     }
 //   });
 
@@ -388,6 +392,23 @@ app.get("/pureWebRTC", (req, res) => {
   res.render("pureWebRTC");
 });
 
+<<<<<<< HEAD
+
+var h = http
+  .createServer(
+    // {
+    //   key: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+    //   ),
+    //   cert: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   ),
+    //   ca: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   )
+    // },
+    app, (req, res) => {
+=======
 var h = https
   .createServer(
     {
@@ -403,6 +424,7 @@ var h = https
     },
     app,
     (req, res) => {
+>>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
       fileServer.serve(req, res);
     }
   )
@@ -423,9 +445,14 @@ io.sockets.on("connection", function(socket) {
   socket.on('message', function (message, room) {
     log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
+<<<<<<< HEAD
+    console.log("room:", room);
+    socket.broadcast.emit('message', message);
+=======
     console.log(room);
     socket.to(room).broadcast.emit('message', message);
 
+>>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
     // socket.to(sk.id).emit('message', message);
     // console.log(sk.id);
   });
