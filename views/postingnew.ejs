@@ -33,16 +33,20 @@
   <script>
     function Destroy(pid) {
       var url = `/destroy?post_id=${pid}`;
-      axios
-        .post(url, {
-        })
-        .then(function (result) {
-          if (result.status === 200) window.location.href = "/community";
-        })
-        .catch(function (error) {
-          alert(error.message);
-        });
+      var ask = confirm("정말 삭제하시겠습니까?");
+      if (ask === true) {
+        axios
+          .post(url, {
+          })
+          .then(function (result) {
+            if (result.status === 200) window.location.href = "/community";
+          })
+          .catch(function (error) {
+            alert(error.message);
+          });
+      } else { }
     }
+  </script>
   </script>
 
 </head>
