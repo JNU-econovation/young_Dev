@@ -12,12 +12,13 @@ const path = require("path");
 const app = express();
 
 /////////multer test//////////
-app.post('/uploadFB', upload.single('feedback', (req, res) => {
-  var video = req.file;
-  console.log(video);
-  `INSERT INTO user (user_email, user_name) VALUES('${req.session.user_email}', '${req.session.user_name}')`
-  const INSERT_FEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_id) VALUES`
-});
+// app.post('/uploadFB', upload.single('feedback', (req, res) => {
+//   var video = req.file;
+//   console.log(video);
+//   `INSERT INTO user (user_email, user_name) VALUES('${req.session.user_email}', '${req.session.user_name}')`;
+//   const INSERT_FEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_id) VALUES`
+
+// });
 //////////////////////////////
 
 // 리모트 테스트용
