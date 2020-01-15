@@ -65,6 +65,13 @@ connection.connect(err => {
 app.use(express.static("public"));
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.render("index", {
+    login_state: req.session.logined,
+    user_name: req.session.user_name
+  });
+});
+
 app.post("/", (req, res) => {
   req.session.logined = req.body.login_state;
   req.session.user_email = req.body.user_email;
@@ -381,8 +388,8 @@ var h = https
       fileServer.serve(req, res);
     }
   )
-  .listen(4000, () => {
-    console.log(`Young's server listening on port 4000`);
+  .listen(, () => {
+    console.log(`Young's server listening on port 443`);
   });
 
 var io = socketIO.listen(h);
