@@ -231,6 +231,7 @@ app.post("/enroll_song", (req, res) => {
 app.get("/userRoom", (req, res) => {
   var SELECT_TUTOR_INFO_QUERY = `select * from tutor, enroll_tutor where enroll_tutor.user_email='${req.session.user_email}' and enroll_tutor.tutor_id=tutor.tutor_id;`;
   var SELECT_SONG_INFO_QUERY = `select * from song, enroll_song where enroll_song.user_email='${req.session.user_email}' and enroll_song.song_id=song.song_id;`;
+  // var SELECT_UPLOADS_INFO_QUERY 
   connection.query(SELECT_TUTOR_INFO_QUERY, (err, tutors_list) => {
     connection.query(SELECT_SONG_INFO_QUERY, (err2, songs_list) => {
       res.render("userRoom", {

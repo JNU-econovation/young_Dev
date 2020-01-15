@@ -107,10 +107,10 @@ p {
 /* testimonials */
 
 #testimonials {
-  padding: 7% 10%;
+  padding: 7% 5%;
   text-align: center;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #07315ea8;;
+  color: #000000;
 }
 
 h2 {
@@ -139,6 +139,10 @@ h2 {
 
 .carousel-item {
   padding: 3% 15%;
+}
+
+.sidepadding {
+  padding: 0% 10%;
 }
 
 /* pricing Section */
