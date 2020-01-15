@@ -117,7 +117,7 @@
   </section>
 
   <section>
-
+    <div class="btn-a"><a href="/tutors">《 back </a></div>
     <div class="container portfolio">
       <div class="row">
         <div class="col-md-12">
@@ -171,8 +171,8 @@
         <div class="media text-muted pt-3">
           <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">[leture <%=lecture.curriculum_order%>] <%=lecture.lecture_title%></strong>
-              <a href="#">move to lecture</a>
+              <strong class="text-gray-dark">[lecture <%=lecture.curriculum_order%>] <%=lecture.lecture_title%></strong>
+              <a href="lecture-playing?vid=<%= lecture.vid %>">move to lecture</a>
             </div>
             <video id="<%=lecture.curriculum_order%>" src="<%=lecture.video_path%>" style="display:none"></video>
             <span id="time<%=lecture.curriculum_order%>" class="d-block">00:00:00</span>
@@ -182,3 +182,4 @@
 
       </div>
     </main>
+  </section>

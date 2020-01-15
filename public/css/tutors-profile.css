@@ -177,7 +177,7 @@ h2 {
 /* log-in button */
 
 .portfolio {
-  padding: 6%;
+  padding: 0% 6% 3%;
   text-align: center;
 }
 .heading {
@@ -215,3 +215,9 @@ h2 {
 }
 
 /*lecture list*/
+
+.btn-a{
+  font-size : 2rem;
+  padding : 2rem 2rem 2rem 25rem;
+  display: inline-block;
+}

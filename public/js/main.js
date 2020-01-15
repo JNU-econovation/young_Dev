@@ -113,6 +113,7 @@ function gotStream(stream) {
 }
 
 var constraints = {
+  audio: true, // 새로 추가
   video: true
 };
 
