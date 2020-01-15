@@ -5,53 +5,62 @@
   <meta charset="utf-8">
   <title>Piano Tutoring</title>
 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- google fonts Ubuntu, montserrat, nanumgodhic-->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean"
+    rel="stylesheet">
 
 
   <!-- font awesome-->
   <script src="https://kit.fontawesome.com/e156ac3480.js" crossorigin="anonymous"></script>
 
   <!-- bootstrap css -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="css/index.css" />
 
   <!-- bootstrap Javascript, jQuery-->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
   <!-- Javascript custumization -->
   <script type="text/javascrupt" src="../js/custumization.js"></script>
-  
+
   <!--smooth scroll-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links
-  $("a").on('click', function(event) {
+  <script>
+    $(document).ready(function () {
+      // Add smooth scrolling to all links
+      $("a").on('click', function (event) {
 
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
+        // Make sure this.hash has a value before overriding default behavior
+        if (this.hash !== "") {
+          // Prevent default anchor click behavior
+          event.preventDefault();
 
-      // Store hash
-      var hash = this.hash;
+          // Store hash
+          var hash = this.hash;
 
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 800, function(){
+          // Using jQuery's animate() method to add smooth page scroll
+          // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 800, function () {
 
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
+            // Add hash (#) to URL when done scrolling (default click behavior)
+            window.location.hash = hash;
+          });
+        } // End if
       });
-    } // End if
-  });
-});
-</script>
+    });
+  </script>
 
 
 </head>
@@ -64,9 +73,10 @@ $(document).ready(function(){
       <!-- Nav Bar -->
 
       <nav class="navbar navbar-expand-lg navbar-dark">
-        
+
         <a class="navbar-brand" href="/">piano tutoring</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -85,9 +95,9 @@ $(document).ready(function(){
             </li>
             <li class="nav-item">
               <% if(login_state) { %>
-                <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
+              <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
               <% } else { %>
-                <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
+              <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
               <% } %>
             </li>
         </div>
@@ -155,7 +165,8 @@ $(document).ready(function(){
           <em>Soeun Choi, Daejeon</em>
         </div>
         <div class="carousel-item">
-          <h2 class="testimonial-text">I used to be so lonely, but with Pianotutoring's help, they've found the passion of my life. I think.</h2>
+          <h2 class="testimonial-text">I used to be so lonely, but with Pianotutoring's help, they've found the passion
+            of my life. I think.</h2>
           <img class="testimonial-image" src="images/lady-img.jpg" alt="lady-profile">
           <em>Yangha Kim, Gwangju</em>
         </div>
@@ -182,9 +193,9 @@ $(document).ready(function(){
   </section>
 
 
-  <!-- #Pricing => #tutors -->
+  <!-- #tutors -->
 
-  <section id="tutors"> 
+  <section id="tutors">
 
     <h2><a class='black' href="/tutors">Tutors</a></h2>
     <p>Simple and affordable price plans for you, Find a tutor who fits you well.</p>
@@ -192,116 +203,59 @@ $(document).ready(function(){
 
     <div class="row">
 
-      <div class="tutors-column col-lg-4 col-md-6">
-
-        <div class="card">
-          <img class="card-img-top" src="images/mozart-tutor.jpg" alt="mozart"></img>
-          <div class="card-body">
-            <h2>Mozart</h2>
-            <p>Beginner Avaliable</p>
-            <p>5 Lecture Per Day</p>
-            <p>Basic classic theory</p>
-            <button class="btn btn-lg btn-block btn-dark" type="button">Sign Up</button>
-          </div>
-        </div>
-      </div>
-
+      <% tutor_information.forEach(function(info){ %>
       <div class="tutors-column col-lg-4 col-md-6">
         <div class="card">
-          <img class="card-img-top" src="images/choppin-tutor.jpeg" alt="choppin"></img>
+          <img class="card-img-top" src=<%= info.profile_image %> alt="mozart"></img>
           <div class="card-body">
-            <h2>Choppin</h2>
-            <p>Intermediate Recommended</p>
-            <p>7 Lecture Per Day</p>
-            <p>Realtime Communication</p>
-            <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
+            <h2><%= info.tutor_name %></h2>
+            <p><%= info.description1 %></p>
+            <p><%= info.description2 %></p>
+            <p><%= info.description3 %></p>
+            <button class="btn btn-lg btn-block btn-dark" type="button" onclick="gotoTP(<%= info.tutor_id %>);">More
+              on</button>
+
           </div>
         </div>
       </div>
+      <% }) %>
+    </div>
 
-      <div class="tutors-column col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="images/franz-tutor.jpeg" alt="franz"></img>
-          <div class="card-body">
-            <h2>Franz</h2>
-            <p>professional Recommended</p>
-            <p>10 Lecture Per Day</p>
-            <p>Realtime Communication</p>
-            <button class="btn-lg btn-block btn-dark" type="button">Sign Up</button>
-          </div>
-        </div>
-      </div>
+    <a class="col-sm-12 more-on-btn" href="/tutors">More on</a>
+  </section>
 
-      <a class="col-sm-12 more-on-btn" href="/tutors">More on</a>
-</section>
+  <!-- songs -->
+  <section id="songs">
 
-<!-- songs -->
-<section id="songs">
-
-  <h2><a class='white' href="/songs">Songs</a></h2>
+    <h2><a class='white' href="/songs">Songs</a></h2>
     <p>Simple and affordable price plans for you, Find a tutor who fits you well.</p>
 
-  <div class="container">
-    <div class="row">
-
-      <div class="col-lg-4">
-        <!--Card-->
-        <div class="card">
-          <!--Card image-->
-          <img class="img-fluid" src="images/[pop]badguy.png" alt="Card image cap">
-          <!--Card content-->
-          <div class="card-body">
-            <!--Title-->
-            <h4 class="card-title">Card title</h4>
-            <!--Text-->
-            <p class="card-text">"Bad Guy" (stylized in all lowercase) is a song recorded by American singer Billie Eilish.</p>
-            <a href="#" class="btn btn-dark">Button</a>
+    <div class="container">
+      <div class="row">
+        <% song_information.forEach(function(info){ %>
+        <div class="col-lg-4">
+          <!--Card-->
+          <div class="card">
+            <!--Card image-->
+            <img class="img-fluid" src="<%=info.song_image%>" alt="Card image cap">
+            <!--Card content-->
+            <div class="card-body">
+              <!--Title-->
+              <h4 class="card-title"><%=info.song_name%></h4>
+              <!--Text-->
+              <p class="card-text"><%=info.description%></p>
+              <a href="#" class="btn btn-dark" onclick="gotoSP(<%=info.song_id%>)">More on</a>
+            </div>
           </div>
+          <!--/.Card-->
         </div>
-      <!--/.Card-->  
-      </div>
-      
-
-      <div class="col-lg-4">
-        <!--Card-->
-        <div class="card">
-          <!--Card image-->
-          <img class="img-fluid" src="images/ryuichisakamoto.png" alt="Card image cap">
-          <!--Card content-->
-          <div class="card-body">
-            <!--Title-->
-            <h4 class="card-title">Card title</h4>
-            <!--Text-->
-            <p class="card-text">Merry Christmas, Mr. Lawrence ("Merry Christmas on the Battlefield"), also known in European editions. </p>
-            <a href="#" class="btn btn-dark">Button</a>
-          </div>
-        </div>
-      <!--/.Card-->
-      </div>
-
-      <div class="col-lg-4">
-        <!--Card-->
-        <div class="card">
-          <!--Card image-->
-          <img class="img-fluid" src="images/[ccm]welove시간을뚫고.png" alt="Card image cap">
-          <!--Card content-->
-          <div class="card-body">
-            <!--Title-->
-            <h4 class="card-title">Card title</h4>
-            <!--Text-->
-            <p class="card-text">This song is very famous CCM on melon chart ranking. I recommend to all ya.</p>
-            <a href="#" class="btn btn-dark">Button</a>
-          </div>
-        </div>
-        <!--/.Card-->
-        </div>
-
+        <% }) %>
       </div>
     </div>
 
     <a class="col-sm-12 more-on-btnwhite" href="/songs">More on</a>
 
-</section>
+  </section>
 
 
   <!-- Footer -->
@@ -313,6 +267,37 @@ $(document).ready(function(){
 
   </footer>
 
+  <script>
+    function gotoTP(tutor_id) {
+      var url = `/tutors-profile?tutor_id=${tutor_id}`;
+      axios
+        .get(url, {
+        })
+        .then(function (result) {
+          window.location.href = url;
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
+    }
+  </script>
+  <script>
+    function gotoSP(song_id) {
+      console.log(song_id);
+      var url = `/songs-profile?song_id=${song_id}`;
+      console.log(url);
+      axios
+        .get(url, {
+        })
+        .then(function (result) {
+          window.location.href = url;
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
+    }
+
+  </script>
 
 </body>
 

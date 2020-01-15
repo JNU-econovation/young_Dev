@@ -64,9 +64,17 @@ app.use(express.static("public"));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.render("index", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM tutor`;
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+    const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
+    connection.query(SELECT_SONG_INFO_QUERY, (err, result2) => {
+      res.render("index", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        tutor_information: [result[0], result[1], result[2]],
+        song_information: [result2[0], result2[1], result2[2]]
+      });
+    });
   });
 });
 
