@@ -65,6 +65,19 @@ connection.connect(err => {
 app.use(express.static("public"));
 app.use(cors());
 
+// redirect HTTP to HTTPS
+app.all('*', (req, res, next) => {
+  let protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  if (protocol == 'https') {
+    next();
+  } else {
+    let from = `${protocol}://${req.hostname}${req.url}`;
+    let to = `https://'${req.hostname}${req.url}`; // log and redirect 
+    console.log(`[${req.method}]: ${from} -> ${to}`);
+    res.redirect(to);
+  }
+});
+
 app.get("/", (req, res) => {
   res.render("index", {
     login_state: req.session.logined,
@@ -388,8 +401,8 @@ var h = https
       fileServer.serve(req, res);
     }
   )
-  .listen(4000, () => {
-    console.log(`Young's server listening on port 4000`);
+  .listen(443, () => {
+    console.log(`Young's server listening on port 443`);
   });
 
 var io = socketIO.listen(h);
