@@ -18,6 +18,19 @@ app.use(
   express.static("./views/examples/conference")
 );
 
+<<<<<<< HEAD
+=======
+// Routes ======================================================================
+// require("./controllers/route.js")(app);
+app.get("/webRTC", (req, res) => {
+  res.render("examples/conference/webRTC.ejs", {
+    title: "Streaming Lesson"
+  });
+});
+
+////////////////////////////
+
+>>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -368,19 +381,18 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-
-
 /////////////////////////step5 test///////////////////////////////
 //예제코드에서 app 대신 h써보기
-var os = require('os');
-var nodeStatic = require('node-static');
-var socketIO = require('socket.io');
-var fileServer = new (nodeStatic.Server)();
+var os = require("os");
+var nodeStatic = require("node-static");
+var socketIO = require("socket.io");
+var fileServer = new nodeStatic.Server();
 
 app.get("/pureWebRTC", (req, res) => {
   res.render("pureWebRTC");
 });
 
+<<<<<<< HEAD
 
 var h = http
   .createServer(
@@ -396,6 +408,23 @@ var h = http
     //   )
     // },
     app, (req, res) => {
+=======
+var h = https
+  .createServer(
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
+    app,
+    (req, res) => {
+>>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
       fileServer.serve(req, res);
     }
   )
@@ -405,62 +434,69 @@ var h = http
 
 var io = socketIO.listen(h);
 
-io.sockets.on('connection', function (socket) {
-
+io.sockets.on("connection", function(socket) {
   // convenience function to log server messages on the client
   function log() {
-    var array = ['Message from server:'];
+    var array = ["Message from server:"];
     array.push.apply(array, arguments);
-    socket.emit('log', array);
+    socket.emit("log", array);
   }
 
   socket.on('message', function (message, room) {
     log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
+<<<<<<< HEAD
     console.log("room:", room);
     socket.broadcast.emit('message', message);
+=======
+    console.log(room);
+    socket.to(room).broadcast.emit('message', message);
+
+>>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
     // socket.to(sk.id).emit('message', message);
     // console.log(sk.id);
   });
 
-  socket.on('create or join', function (room) {
-    log('Received request to create or join room ' + room);
+  socket.on("create or join", function(room) {
+    log("Received request to create or join room " + room);
 
     var clientsInRoom = io.sockets.adapter.rooms[room];
-    var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
-    log('Room ' + room + ' now has ' + numClients + ' client(s)');
+    var numClients = clientsInRoom
+      ? Object.keys(clientsInRoom.sockets).length
+      : 0;
+    log("Room " + room + " now has " + numClients + " client(s)");
 
     if (numClients === 0) {
       socket.join(room);
-      log('Client ID ' + socket.id + ' created room ' + room);
-      socket.emit('created', room, socket.id);
-
+      log("Client ID " + socket.id + " created room " + room);
+      socket.emit("created", room, socket.id);
     } else if (numClients === 1) {
-      log('Client ID ' + socket.id + ' joined room ' + room);
-      io.sockets.in(room).emit('join', room);
+      log("Client ID " + socket.id + " joined room " + room);
+      io.sockets.in(room).emit("join", room);
       socket.join(room);
-      socket.emit('joined', room, socket.id);
-      io.sockets.in(room).emit('ready');
-    } else { // max two clients
-      socket.emit('full', room);
+      socket.emit("joined", room, socket.id);
+      io.sockets.in(room).emit("ready");
+    } else {
+      // max two clients
+      socket.emit("full", room);
     }
   });
 
-  socket.on('ipaddr', function () {
+  socket.on("ipaddr", function() {
     var ifaces = os.networkInterfaces();
     for (var dev in ifaces) {
-      ifaces[dev].forEach(function (details) {
-        if (details.family === 'IPv4' && details.address !== '127.0.0.1') {
-          socket.emit('ipaddr', details.address);
+      ifaces[dev].forEach(function(details) {
+        if (details.family === "IPv4" && details.address !== "127.0.0.1") {
+          socket.emit("ipaddr", details.address);
         }
       });
     }
   });
 
-  socket.on('bye', function () {
-    console.log('received bye');
+  socket.on("bye", function() {
+    console.log("received bye");
   });
-})
+});
 
 //////////////////////////////////////////////////////////////////
 
@@ -468,5 +504,3 @@ io.sockets.on('connection', function (socket) {
 //   require("./controllers/socket.js")(http);
 //   console.log(`Young's server listening on port 4000`);
 // })
-
-
