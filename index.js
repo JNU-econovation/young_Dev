@@ -4,9 +4,8 @@ const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
-
 const multer = require("multer");
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'public/uploads/' });
 
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -362,11 +361,8 @@ app.get("/lecture-playing", (req, res) => {
 ////////////////////////////////////
 app.post('/uploadFB', upload.single('feedback'), (req, res) => {
   var index = /=/.exec(req.headers.referer).index;
-  console.log(index);
   var vid = req.headers.referer.substring(index + 1);
-  console.log(vid);
   var fb = req.file;
-  console.log(fb);
   const FIND_TorS_ID_QUERY = `SELECT tid, sid FROM lecture_videos WHERE vid=${vid};`;
   connection.query(FIND_TorS_ID_QUERY, (err, result) => {
     if (err) { res.send(err) }

@@ -94,7 +94,7 @@
             <div class="container" style="display: inline; margin-left: -100px;">
               <div class="row" style="display: inline;">
                 <div class="col-md-12" style="display: inline;">
-                  <button type="submit" class="btn btn-labeled btn-dark">Submit</button>
+                  <button id="submit" type="submit" class="btn btn-labeled btn-dark">Submit</button>
                 </div>
               </div>
             </div>
@@ -106,20 +106,13 @@
   </section>
 </body>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<!-- <script>
-  function submit(video_id) {
-    console.log("submit 실행");
-    console.log(video_id);
-    axios
-      .post('/uploadFB', {
-        vid: video_id
-      })
-      .then(function (result) {
-        if (result.status === 200) window.location.href = history.go(-2);
-        console.log("200 받았음");
-      })
-      .catch(function (error) {
-        alert(error.message);
-      });
-  }
-</script> -->
+<script>
+  $(document).ready(function () {
+    $("#submit").click(function () {
+      if ($("#file-upload1").val().length == 0) {
+        alert("파일을 첨부하지 않았습니다");
+        $("#file-upload1").focus(); return false;
+      }
+    })
+  })
+</script>
