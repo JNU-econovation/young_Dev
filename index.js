@@ -5,9 +5,18 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
 
+const multer = require("multer");
+const upload = multer({ dest: 'uploads/' });
+
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+
+////////////////////////////////////
+app.post('/uploadFB', upload.single('feedback'), (req, res) => {
+  const INSERT_FEEDBACK_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${req.session.user_email}', '${req.session.user_name}')`;
+});
+////////////////////////////////////
 
 // 리모트 테스트용
 const https = require("https");
