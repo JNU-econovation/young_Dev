@@ -10,7 +10,7 @@ const path = require("path");
 const app = express();
 
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -66,9 +66,17 @@ app.use(express.static("public"));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.render("index", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
+  const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM tutor`;
+  connection.query(SELECT_TUTOR_INFO_QUERY, (err, result) => {
+    const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
+    connection.query(SELECT_SONG_INFO_QUERY, (err, result2) => {
+      res.render("index", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        tutor_information: [result[0], result[1], result[2]],
+        song_information: [result2[0], result2[1], result2[2]]
+      });
+    });
   });
 });
 
@@ -371,19 +379,19 @@ app.get("/pureWebRTC", (req, res) => {
 });
 
 
-var h = https
+var h = http
   .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
+    // {
+    //   key: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+    //   ),
+    //   cert: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   ),
+    //   ca: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   )
+    // },
     app, (req, res) => {
       fileServer.serve(req, res);
     }
