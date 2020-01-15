@@ -5,7 +5,6 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const fs = require("fs");
 const multer = require("multer");
-const upload = multer({ dest: 'public/uploads/' });
 
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -39,6 +38,17 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 
+//////////////////////Multer////////////////////////////
+var _storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({ storage: _storage });
+
 //////////////////////MySQL/////////////////////////////
 
 const connection = mysql.createConnection({
@@ -56,6 +66,7 @@ connection.connect(err => {
   }
 });
 app.use(express.static("public"));
+app.use('/files', express.static("uploads"));
 app.use(cors());
 
 /////////////////////////index///////////////////////////////
@@ -286,15 +297,18 @@ app.get("/postingnew", (req, res) => {
   });
 });
 
-app.post("/upload", (req, res) => {
-  console.log(req);
-  var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.video_path}');`;
-
+app.post("/upload", upload.array('file', 2), (req, res) => {
+  var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.file}');`;
+  console.log(req.body);
+  console.log(req.body.file);
+  console.log(req.files);
   connection.query(INSERT_POST_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
-      return res.status(200).end();
+      res.statusCode = 302;
+      res.setHeader('Location', "/community");
+      res.end();
     }
   });
 });
@@ -369,8 +383,8 @@ app.post('/uploadFB', upload.single('feedback'), (req, res) => {
     if (err) { res.send(err) }
     else {
       console.log(result);
-      const INSERT_TFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, tid) VALUES('${fb.path}','${req.session.user_email}', ${result[0].tid})`;
-      const INSERT_SFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, sid) VALUES('${fb.path}','${req.session.user_email}', ${result[0].sid})`;
+      const INSERT_TFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, tid) VALUES('${fb.originalname}','${req.session.user_email}', ${result[0].tid})`;
+      const INSERT_SFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, sid) VALUES('${fb.originalname}','${req.session.user_email}', ${result[0].sid})`;
       var QUERY;
       if (result[0].tid) { QUERY = INSERT_TFEEDBACK_QUERY; }
       else if (result[0].sid) { QUERY = INSERT_SFEEDBACK_QUERY; }
