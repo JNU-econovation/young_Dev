@@ -17,18 +17,6 @@ app.use(
   express.static("./views/examples/conference")
 );
 
-// Routes ======================================================================
-// require("./controllers/route.js")(app);
-app.get("/webRTC", (req, res) => {
-  res.render("examples/conference/webRTC.ejs", {
-    title: "Streaming Lesson"
-  });
-});
-
-////////////////////////////
-
-
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
