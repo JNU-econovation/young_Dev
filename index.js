@@ -14,7 +14,7 @@ const app = express();
 // 로컬 테스트용
 
 // 리모트 테스트용
-// const https = require("https");
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -52,8 +52,8 @@ app.set("view options", { layout: false });
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "sjdlssj102030",
+  user: "young",
+  password: "pianotutoring",
   database: "piano_tutoring"
 });
 
@@ -360,33 +360,33 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-// https
-//   .createServer(
-//     {
-//       key: fs.readFileSync(
-//         "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-//       ),
-//       cert: fs.readFileSync(
-//         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-//       ),
-//       ca: fs.readFileSync(
-//         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-//       )
-//     },
-//     app
-//   )
-//   .listen(4000, () => {
-//     console.log(`Young's server listening on port 4000`);
-//   });
+https
+  .createServer(
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
+    app
+  )
+  .listen(4000, () => {
+    console.log(`Young's server listening on port 4000`);
+  });
 
 // Socket.io ======================================================================
 
-const http = require("http").createServer(app);
+// const http = require("http").createServer(app);
 
-http.listen(4000, () => {
-  require("./controllers/socket.js")(http);
-  console.log(`Young's server listening on port 4000`);
-});
+// http.listen(4000, () => {
+//   require("./controllers/socket.js")(http);
+//   console.log(`Young's server listening on port 4000`);
+// });
 
 // http.listen(4000, () => {
 // });
