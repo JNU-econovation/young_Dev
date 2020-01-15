@@ -195,16 +195,21 @@ app.get("/songs-profile", (req, res) => {
   const sid = req.query.song_id;
   const SELECT_SONG_MOREINFO_QUERY = `SELECT song_id,song_name,song_image,artist FROM song WHERE song_id='${sid}'`;
   var FIND_ENROLL_SONG_QUERY = `SELECT * from enroll_song WHERE user_email='${req.session.user_email}' and song_id='${sid}'`;
+  const SELECT_SONG_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE sid=${sid}`;
   connection.query(SELECT_SONG_MOREINFO_QUERY, (err, result) => {
     if (err) {
       res.send(err);
     } else {
       connection.query(FIND_ENROLL_SONG_QUERY, (err, result2) => {
-        res.render("songs-profile", {
-          login_state: req.session.logined,
-          user_name: req.session.user_name,
-          song_info: result,
-          isEnrolled: result2
+        connection.query(SELECT_SONG_LECTURE_QUERY, (err3, result3) => {
+          console.log(result3);
+          res.render("songs-profile", {
+            login_state: req.session.logined,
+            user_name: req.session.user_name,
+            song_info: result,
+            isEnrolled: result2,
+            lectures: result3
+          });
         });
       });
     }
@@ -332,10 +337,19 @@ app.post("/destroy", (req, res) => {
 });
 
 app.get("/lecture-playing", (req, res) => {
-  res.render("lecture-playing", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
-  });
+  var vid = req.query.vid;
+  const SELECT_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE vid=${vid};`;
+  connection.query(SELECT_LECTURE_QUERY, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("lecture-playing", {
+        login_state: req.session.logined,
+        user_name: req.session.user_name,
+        lecture: result
+      });
+    }
+  })
 });
 
 app.get("/lectures/add", (req, res) => {
