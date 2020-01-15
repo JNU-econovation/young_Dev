@@ -31,6 +31,7 @@
     crossorigin="anonymous"></script>
   <script>
     function Destroy(pid) {
+      confirm("게시물을 삭제하시겠습니까?");
       var url = `/destroy?post_id=${pid}`;
       axios
         .post(url, {

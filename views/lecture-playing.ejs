@@ -88,18 +88,38 @@
     <div class="container-fluid">
       <div class="default-file-upload">
         <h4>After lecture, playing video for feedback !</h4>
-        <input id="file-upload1" class="fill-upload" type="file" />
-        <span>
-          <div class="container" style="display: inline; margin-left: -100px;">
-            <div class="row" style="display: inline;">
-              <div class="col-md-12" style="display: inline;">
-                <button type="button" class="btn btn-labeled btn-dark">Submit</button>
+        <form action="/uploadFB?" enctype="multipart/form-data" method="POST">
+          <input id="file-upload1" class="fill-upload" type="file" name='feedback' />
+          <span>
+            <div class="container" style="display: inline; margin-left: -100px;">
+              <div class="row" style="display: inline;">
+                <div class="col-md-12" style="display: inline;">
+                  <button type="submit" class="btn btn-labeled btn-dark">Submit</button>
+                </div>
               </div>
             </div>
-          </div>
-        </span>
+          </span>
+        </form>
       </div>
     </div>
 
   </section>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- <script>
+  function submit(video_id) {
+    console.log("submit 실행");
+    console.log(video_id);
+    axios
+      .post('/uploadFB', {
+        vid: video_id
+      })
+      .then(function (result) {
+        if (result.status === 200) window.location.href = history.go(-2);
+        console.log("200 받았음");
+      })
+      .catch(function (error) {
+        alert(error.message);
+      });
+  }
+</script> -->

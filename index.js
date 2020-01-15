@@ -12,14 +12,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-////////////////////////////////////
-app.post('/uploadFB', upload.single('feedback'), (req, res) => {
-  const INSERT_FEEDBACK_QUERY = `INSERT INTO user (user_email, user_name) VALUES('${req.session.user_email}', '${req.session.user_name}')`;
-});
-////////////////////////////////////
 
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -45,6 +40,8 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("view options", { layout: false });
 
+//////////////////////MySQL/////////////////////////////
+
 const connection = mysql.createConnection({
   host: "localhost",
   user: "young",
@@ -61,6 +58,8 @@ connection.connect(err => {
 });
 app.use(express.static("public"));
 app.use(cors());
+
+/////////////////////////index///////////////////////////////
 
 app.get("/", (req, res) => {
   const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM tutor`;
@@ -118,6 +117,8 @@ app.post("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
+
+///////////////////////////tutor////////////////////////////
 
 app.get("/tutors", (req, res) => {
   const SELECT_TUTOR_INFO_QUERY = `SELECT * FROM tutor`;
@@ -177,6 +178,8 @@ app.post("/enroll_tutor", (req, res) => {
 //   });
 
 // });
+
+//////////////////////////songs/////////////////////////////////
 
 app.get("/songs", (req, res) => {
   const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
@@ -240,6 +243,8 @@ app.get("/userRoom", (req, res) => {
     });
   });
 });
+
+///////////////////community///////////////////
 
 app.get("/community", (req, res) => {
   const SELECT_POST_THUMBNAIL_QUERY = `SELECT post_id,title,description,user_name FROM posting LEFT JOIN user ON posting.user_email = user.user_email;`;
@@ -335,6 +340,8 @@ app.post("/destroy", (req, res) => {
   });
 });
 
+//////////////////lecture//////////////////////////
+
 app.get("/lecture-playing", (req, res) => {
   var vid = req.query.vid;
   const SELECT_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE vid=${vid};`;
@@ -351,34 +358,45 @@ app.get("/lecture-playing", (req, res) => {
   })
 });
 
-app.get("/lectures/add", (req, res) => {
-  const { tid, video_path } = req.query;
-  const INSERT_LECTURES_QUERY = `INSERT INTO lecture_videos (tid, video_path) VALUES(${tid}, '${video_path}')`;
-  connection.query(INSERT_LECTURES_QUERY, (err, results) => {
-    if (err) {
-      return res.send(err);
-    } else {
-      return res.send("successfully added lecture");
-    }
-  });
-});
 
-app.get("/lectures", (req, res) => {
-  const SELECET_ALL_PRODUCTS_QUERY = "SELECT * FROM lecture_videos";
-  connection.query(SELECET_ALL_PRODUCTS_QUERY, (err, results) => {
-    if (err) {
-      return res.send(err);
-    } else {
-      return res.json({
-        data: results
+////////////////////////////////////
+app.post('/uploadFB', upload.single('feedback'), (req, res) => {
+  var index = /=/.exec(req.headers.referer).index;
+  console.log(index);
+  var vid = req.headers.referer.substring(index + 1);
+  console.log(vid);
+  var fb = req.file;
+  console.log(fb);
+  const FIND_TorS_ID_QUERY = `SELECT tid, sid FROM lecture_videos WHERE vid=${vid};`;
+  connection.query(FIND_TorS_ID_QUERY, (err, result) => {
+    if (err) { res.send(err) }
+    else {
+      console.log(result);
+      const INSERT_TFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, tid) VALUES('${fb.path}','${req.session.user_email}', ${result[0].tid})`;
+      const INSERT_SFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, sid) VALUES('${fb.path}','${req.session.user_email}', ${result[0].sid})`;
+      var QUERY;
+      if (result[0].tid) { QUERY = INSERT_TFEEDBACK_QUERY; }
+      else if (result[0].sid) { QUERY = INSERT_SFEEDBACK_QUERY; }
+      connection.query(QUERY, (err, result2) => {
+        if (err) { res.send(err) }
+        else {
+          console.log("파일 업로드 성공");
+          var url;
+          if (result[0].tid) { url = `/tutors-profile?tutor_id=${result[0].tid}` }
+          else if (result[0].sid) { url = `/songs-profile?song_id=${result[0].sid}` };
+          res.statusCode = 302;
+          res.setHeader('Location', url);
+          res.end();
+        }
       });
     }
   });
 });
+////////////////////////////////////
 
 
 
-/////////////////////////step5 test///////////////////////////////
+/////////////////////////WebRTC///////////////////////////////
 //예제코드에서 app 대신 h써보기
 var os = require('os');
 var nodeStatic = require('node-static');
@@ -390,19 +408,19 @@ app.get("/pureWebRTC", (req, res) => {
 });
 
 
-var h = https
+var h = http
   .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
+    // {
+    //   key: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+    //   ),
+    //   cert: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   ),
+    //   ca: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   )
+    // },
     app, (req, res) => {
       fileServer.serve(req, res);
     }
