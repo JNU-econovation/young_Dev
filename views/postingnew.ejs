@@ -31,42 +31,17 @@
     crossorigin="anonymous"></script>
 
   <script>
-    function upload() {
-      var title_value = document.querySelector("#post_title").value;
-      var description_value = document.querySelector("#description").value;
-      var path_value = document.querySelector("#file-upload1").value;
-
-      if (!title_value) {
-        alert("제목을 입력하세요");
-      } else if (!description_value) {
-        alert("내용을 입력하세요");
-      } else {
-        axios
-          .post("/upload", {
-            title: title_value,
-            description: description_value,
-            video_path: path_value
-          })
-          .then(function (result) {
-            if (result.status === 200) window.location.href = "/community";
-          })
-          .catch(function (error) {
-            alert(error.message);
-          });
-      }
-    }
-  </script>
-
-  <script type="text/javascript" src="jquery.min.js" charset="euc-kr"></script>
-  <script type="text/javascript">
-    fuction LoadImg(value) {
-      if (values.files && value.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          $('#LoadImg').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(value.files[0]);
-      }
+    function Destroy(pid) {
+      var url = `/destroy?post_id=${pid}`;
+      axios
+        .post(url, {
+        })
+        .then(function (result) {
+          if (result.status === 200) window.location.href = "/community";
+        })
+        .catch(function (error) {
+          alert(error.message);
+        });
     }
   </script>
 
@@ -74,47 +49,35 @@
 
 <body>
 
-    <section id="title">
-      <div class="container-fluid">
-  
-        <!-- Nav Bar -->
-  
-        <nav class="navbar navbar-expand-lg navbar-dark">
-          <a class="navbar-brand" href="/">piano tutoring</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/tutors">Tutors</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/songs">Songs</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/community">Community</a>
-              </li> -->
-              <li class="nav-item">
-                <% if(login_state) { %>
-                <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
-                <% } else { %>
-                <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
-                <% } %>
-              </li>
-          </div>
-          </li>
-          </ul>
-  
-        </nav>
-     </div>
-    </section>
+  <section id="title">
+    <div class="container-fluid">
 
-      <!-- Page Content -->
+      <!-- Nav Bar -->
+
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">piano tutoring</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <% if(login_state) { %>
+              <a class="nav-link" href="/userRoom"><%= user_name %>님</a>
+              <% } else { %>
+              <a class="login-button" href="/userRoom"><i class="far fa-user-circle fa-2x"></i></a>
+              <% } %>
+            </li>
+        </div>
+        </li>
+        </ul>
+
+      </nav>
+    </div>
+  </section>
+
+  <!-- Page Content -->
   <div class="container">
 
     <div class="row">
@@ -123,12 +86,13 @@
       <div class="col-lg-12">
 
         <!-- Title -->
-        <h1 class="mt-4">Post Title</h1>
+        <h1 class="mt-4">Title -
+          <%= post[0].title %></h1>
 
         <!-- Author -->
         <p class="lead">
           by
-          <span>Start Bootstrap</span>
+          <span><%= post[0].user_name %></span>
         </p>
 
         <hr>
@@ -139,18 +103,23 @@
         <hr>
 
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+        <!-- <img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""> -->
+        <% if(post[0].video_path.length!=0) { %>
+        <div class="img-fluid rounded" src="http://placehold.it/900x300>
+            <video width=" 700" height="500" controls style="margin-bottom: 50px;" autoplay preload="auto">
+          <source src="<%= post[0].video_path %>" type="video/mp4">
+          <source src="<%= post[0].video_path %>" type="video/ogg">
+          Your browser does not support the video tag.
+          </video>
+        </div>
+        <% } %>
 
         <hr>
 
         <!-- Post Content -->
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
+        <p class="lead"><%= post[0].description %></p>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-
-        <blockquote class="blockquote">
+        <!-- <blockquote class="blockquote">
           <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
           <footer class="blockquote-footer">Someone famous in
             <cite title="Source Title">Source Title</cite>
@@ -159,17 +128,24 @@
 
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p> -->
 
         <hr>
-
-        <!--button-->
-        <a href="#" class="btn btn-dark">back</a>        
+        <div>
+          <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+            onclick="window.location.href=document.referrer">Back</button>
+          <% if (post[0].user_email == user_email) { %>
+          <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+            onclick="window.location.href='/modify-page?post_id=<%= post[0].post_id %>'">Modify</button>
+          <button type="button" class="btn btn-dark btn-lg btn-lg download-button"
+            onclick="Destroy(<%= post[0].post_id %>)">Delete</button>
+          <% } %>
         </div>
-    <!-- /.row -->
+      </div>
+      <!-- /.row -->
     </div>
-<!-- /.container -->
-    </div>
+    <!-- /.container -->
+  </div>
 </body>
 
 

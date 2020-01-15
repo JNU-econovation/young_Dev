@@ -9,10 +9,6 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-////////for webRTC//////////
-
-// 로컬 테스트용
-
 // 리모트 테스트용
 const https = require("https");
 app.use("/contents", express.static("./contents"));
@@ -64,11 +60,6 @@ connection.connect(err => {
     console.log("Connected to the MySQL server");
   }
 });
-
-let login_state = false;
-let user_email;
-let user_name;
-
 app.use(express.static("public"));
 app.use(cors());
 
@@ -169,6 +160,17 @@ app.post("/enroll_tutor", (req, res) => {
   });
 });
 
+// app.post("/tutors-profile", (req, res) => {
+//   const tid = req.query.tutor_id;
+//   const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
+//   connection.query(SELECT_TUTOR_LECTURE_QUERY, (err, result) => {
+//     if (err) { res.send(err); } else {
+//       res.write({ list: result }).send;
+//     }
+//   });
+
+// });
+
 app.get("/songs", (req, res) => {
   const SELECT_SONG_INFO_QUERY = `SELECT * FROM song`;
   connection.query(SELECT_SONG_INFO_QUERY, (err, result) => {
@@ -250,13 +252,6 @@ app.get("/post-page", (req, res) => {
 });
 
 app.get("/postingnew", (req, res) => {
-  res.render("postingnew", {
-    login_state: req.session.logined,
-    user_name: req.session.user_name
-  });
-});
-
-app.get("/posting", (req, res) => {
   const pid = req.query.post_id;
   var SELECT_POSTING_QUERY = `SELECT post_id,title,description,posting.user_email,user_name,video_path FROM posting LEFT JOIN user ON posting.user_email = user.user_email WHERE post_id=${pid};`;
   connection.query(SELECT_POSTING_QUERY, (err, result) => {
@@ -264,7 +259,7 @@ app.get("/posting", (req, res) => {
     if (err) {
       return res.send(err);
     } else {
-      res.render("posting", {
+      res.render("postingnew", {
         login_state: req.session.logined,
         user_email: req.session.user_email,
         user_name: req.session.user_name,
@@ -360,7 +355,18 @@ app.get("/lectures", (req, res) => {
   });
 });
 
-https
+/////////////////////////step5 test///////////////////////////////
+//예제코드에서 app 대신 h써보기
+var os = require("os");
+var nodeStatic = require("node-static");
+var socketIO = require("socket.io");
+var fileServer = new nodeStatic.Server();
+
+app.get("/pureWebRTC", (req, res) => {
+  res.render("pureWebRTC");
+});
+
+var h = https
   .createServer(
     {
       key: fs.readFileSync(
@@ -373,20 +379,77 @@ https
         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
       )
     },
-    app
+    app,
+    (req, res) => {
+      fileServer.serve(req, res);
+    }
   )
   .listen(4000, () => {
     console.log(`Young's server listening on port 4000`);
   });
 
-// Socket.io ======================================================================
+var io = socketIO.listen(h);
 
-// const http = require("http").createServer(app);
+io.sockets.on("connection", function(socket) {
+  // convenience function to log server messages on the client
+  function log() {
+    var array = ["Message from server:"];
+    array.push.apply(array, arguments);
+    socket.emit("log", array);
+  }
+
+  socket.on("message", function(message) {
+    log("Client said: ", message);
+    // for a real app, would be room-only (not broadcast)
+    socket.broadcast.emit("message", message);
+    // socket.to(sk.id).emit('message', message);
+    // console.log(sk.id);
+  });
+
+  socket.on("create or join", function(room) {
+    log("Received request to create or join room " + room);
+
+    var clientsInRoom = io.sockets.adapter.rooms[room];
+    var numClients = clientsInRoom
+      ? Object.keys(clientsInRoom.sockets).length
+      : 0;
+    log("Room " + room + " now has " + numClients + " client(s)");
+
+    if (numClients === 0) {
+      socket.join(room);
+      log("Client ID " + socket.id + " created room " + room);
+      socket.emit("created", room, socket.id);
+    } else if (numClients === 1) {
+      log("Client ID " + socket.id + " joined room " + room);
+      io.sockets.in(room).emit("join", room);
+      socket.join(room);
+      socket.emit("joined", room, socket.id);
+      io.sockets.in(room).emit("ready");
+    } else {
+      // max two clients
+      socket.emit("full", room);
+    }
+  });
+
+  socket.on("ipaddr", function() {
+    var ifaces = os.networkInterfaces();
+    for (var dev in ifaces) {
+      ifaces[dev].forEach(function(details) {
+        if (details.family === "IPv4" && details.address !== "127.0.0.1") {
+          socket.emit("ipaddr", details.address);
+        }
+      });
+    }
+  });
+
+  socket.on("bye", function() {
+    console.log("received bye");
+  });
+});
+
+//////////////////////////////////////////////////////////////////
 
 // http.listen(4000, () => {
 //   require("./controllers/socket.js")(http);
 //   console.log(`Young's server listening on port 4000`);
-// });
-
-// http.listen(4000, () => {
-// });
+// })
