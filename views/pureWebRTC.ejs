@@ -1,67 +1,84 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" />
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <title>Realtime communication with WebRTC</title>
 
-  <meta name="description" />
-  <meta name="viewport" content="width=1024, initial-scale=1.0" />
-  <title>Realtime communication with WebRTC</title>
+    <!-- <link rel="stylesheet" href="/css/main.css" /> -->
+    <link
+      href="/contents/img/logo-webrtc.png"
+      type="/contentsimage/png"
+      rel="icon"
+    />
 
-  <!-- <link rel="stylesheet" href="/css/main.css" /> -->
-  <link href="/contents/img/logo-webrtc.png" type="/contentsimage/png" rel="icon" />
-  <link href="/contents/css/style.css" type="text/css" rel="stylesheet" />
+    <!-- google fonts Ubuntu, montserrat-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- google fonts Ubuntu, montserrat-->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900|Ubuntu:400,700i&display=swap"
-    rel="stylesheet" />
+    <!-- font awesome-->
+    <script
+      src="https://kit.fontawesome.com/e156ac3480.js"
+      crossorigin="anonymous"
+    ></script>
 
-  <!-- font awesome-->
-  <script src="https://kit.fontawesome.com/e156ac3480.js" crossorigin="anonymous"></script>
+    <!-- bootstrap css -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/pureWebRTC.css" />
 
-  <!-- bootstrap css -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-  <link rel="stylesheet" href="css/webRTC.css" />
+    <!-- bootstrap Javascript, jQuery-->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-  <!-- bootstrap Javascript, jQuery-->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
-</head>
+  <body>
+    <header>
+      <h2 class="streaming">
+        <a href="/tutors-profile"> </a>
+      </h2>
+      <link
+        href="/views/examples/conference/css/main.css"
+        rel="stylesheet"
+        type="text/css"
+      />
+    </header>
 
-<body>
-  <header>
-    <h2 class="streaming">
-      <a href="/tutors-profile">
-      </a>
-    </h2>
-    <link href="/views/examples/conference/css/main.css" rel="stylesheet" type="text/css" />
-  </header>
-
-  <div id="content">
-    <div class="wrap">
-      <div id="videos">
-        <video id="localVideo" autoplay muted playsinline></video>
-        <video id="remoteVideo" autoplay playsinline></video>
+    <div id="content">
+      <div class="wrap">
+        <div id="videos">
+          <video id="localVideo" autoplay muted playsinline></video>
+          <video id="remoteVideo" autoplay playsinline></video>
+        </div>
       </div>
     </div>
-  </div>
-  <footer>
+    <footer></footer>
 
-  </footer>
-
-  <!-- FOR WEBRTC! DO NOT COPY AND PASE THESE TO OTHER PAGE.ejs!! This file is automatically added/served when running "node index.js". -->
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-  <script src="js/main.js"></script>
-</body>
-
+    <!-- FOR WEBRTC! DO NOT COPY AND PASE THESE TO OTHER PAGE.ejs!! This file is automatically added/served when running "node index.js". -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>
