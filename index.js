@@ -420,10 +420,12 @@ io.sockets.on("connection", function(socket) {
     socket.emit("log", array);
   }
 
-  socket.on("message", function(message) {
-    log("Client said: ", message);
+  socket.on('message', function (message, room) {
+    log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
-    socket.broadcast.emit("message", message);
+    console.log(room);
+    socket.to(room).broadcast.emit('message', message);
+
     // socket.to(sk.id).emit('message', message);
     // console.log(sk.id);
   });
