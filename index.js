@@ -10,9 +10,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-
 // 리모트 테스트용
-const http = require("http");
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -40,13 +39,13 @@ app.set("view options", { layout: false });
 
 //////////////////////Multer////////////////////////////
 var _storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads/')
+  destination: function(req, file, cb) {
+    cb(null, "public/uploads/");
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname)
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
   }
-})
+});
 const upload = multer({ storage: _storage });
 
 //////////////////////MySQL/////////////////////////////
@@ -66,7 +65,7 @@ connection.connect(err => {
   }
 });
 app.use(express.static("public"));
-app.use('/files', express.static("uploads"));
+app.use("/files", express.static("uploads"));
 app.use(cors());
 
 /////////////////////////index///////////////////////////////
@@ -183,7 +182,7 @@ app.post("/enroll_tutor", (req, res) => {
 //   const SELECT_TUTOR_LECTURE_QUERY = `SELECT * FROM lecture_videos WHERE tid=${tid}`;
 //   connection.query(SELECT_TUTOR_LECTURE_QUERY, (err, result) => {
 //     if (err) { res.send(err); } else {
-//       res.write({ list: result }).send;
+//       res.send({ list: result });
 //     }
 //   });
 
@@ -242,7 +241,7 @@ app.post("/enroll_song", (req, res) => {
 app.get("/userRoom", (req, res) => {
   var SELECT_TUTOR_INFO_QUERY = `select * from tutor, enroll_tutor where enroll_tutor.user_email='${req.session.user_email}' and enroll_tutor.tutor_id=tutor.tutor_id;`;
   var SELECT_SONG_INFO_QUERY = `select * from song, enroll_song where enroll_song.user_email='${req.session.user_email}' and enroll_song.song_id=song.song_id;`;
-  // var SELECT_UPLOADS_INFO_QUERY 
+  // var SELECT_UPLOADS_INFO_QUERY
   connection.query(SELECT_TUTOR_INFO_QUERY, (err, tutors_list) => {
     connection.query(SELECT_SONG_INFO_QUERY, (err2, songs_list) => {
       res.render("userRoom", {
@@ -297,7 +296,7 @@ app.get("/postingnew", (req, res) => {
   });
 });
 
-app.post("/upload", upload.array('file', 2), (req, res) => {
+app.post("/upload", upload.array("file", 2), (req, res) => {
   var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.file}');`;
   console.log(req.body);
   console.log(req.body.file);
@@ -307,7 +306,7 @@ app.post("/upload", upload.array('file', 2), (req, res) => {
       res.send(err);
     } else {
       res.statusCode = 302;
-      res.setHeader('Location', "/community");
+      res.setHeader("Location", "/community");
       res.end();
     }
   });
@@ -369,34 +368,41 @@ app.get("/lecture-playing", (req, res) => {
         lecture: result
       });
     }
-  })
+  });
 });
 
-
 ////////////////////////////////////
-app.post('/uploadFB', upload.single('feedback'), (req, res) => {
+app.post("/uploadFB", upload.single("feedback"), (req, res) => {
   var index = /=/.exec(req.headers.referer).index;
   var vid = req.headers.referer.substring(index + 1);
   var fb = req.file;
   const FIND_TorS_ID_QUERY = `SELECT tid, sid FROM lecture_videos WHERE vid=${vid};`;
   connection.query(FIND_TorS_ID_QUERY, (err, result) => {
-    if (err) { res.send(err) }
-    else {
+    if (err) {
+      res.send(err);
+    } else {
       console.log(result);
       const INSERT_TFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, tid) VALUES('${fb.originalname}','${req.session.user_email}', ${result[0].tid})`;
       const INSERT_SFEEDBACK_QUERY = `INSERT INTO uploaded_videos (video_path, user_email, sid) VALUES('${fb.originalname}','${req.session.user_email}', ${result[0].sid})`;
       var QUERY;
-      if (result[0].tid) { QUERY = INSERT_TFEEDBACK_QUERY; }
-      else if (result[0].sid) { QUERY = INSERT_SFEEDBACK_QUERY; }
+      if (result[0].tid) {
+        QUERY = INSERT_TFEEDBACK_QUERY;
+      } else if (result[0].sid) {
+        QUERY = INSERT_SFEEDBACK_QUERY;
+      }
       connection.query(QUERY, (err, result2) => {
-        if (err) { res.send(err) }
-        else {
+        if (err) {
+          res.send(err);
+        } else {
           console.log("파일 업로드 성공");
           var url;
-          if (result[0].tid) { url = `/tutors-profile?tutor_id=${result[0].tid}` }
-          else if (result[0].sid) { url = `/songs-profile?song_id=${result[0].sid}` };
+          if (result[0].tid) {
+            url = `/tutors-profile?tutor_id=${result[0].tid}`;
+          } else if (result[0].sid) {
+            url = `/songs-profile?song_id=${result[0].sid}`;
+          }
           res.statusCode = 302;
-          res.setHeader('Location', url);
+          res.setHeader("Location", url);
           res.end();
         }
       });
@@ -405,34 +411,32 @@ app.post('/uploadFB', upload.single('feedback'), (req, res) => {
 });
 ////////////////////////////////////
 
-
-
 /////////////////////////WebRTC///////////////////////////////
 //예제코드에서 app 대신 h써보기
-var os = require('os');
-var nodeStatic = require('node-static');
-var socketIO = require('socket.io');
-var fileServer = new (nodeStatic.Server)();
+var os = require("os");
+var nodeStatic = require("node-static");
+var socketIO = require("socket.io");
+var fileServer = new nodeStatic.Server();
 
 app.get("/pureWebRTC", (req, res) => {
   res.render("pureWebRTC");
 });
 
-
-var h = http
+var h = https
   .createServer(
-    // {
-    //   key: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-    //   ),
-    //   cert: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   ),
-    //   ca: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   )
-    // },
-    app, (req, res) => {
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
+    app,
+    (req, res) => {
       fileServer.serve(req, res);
     }
   )
@@ -442,61 +446,64 @@ var h = http
 
 var io = socketIO.listen(h);
 
-io.sockets.on('connection', function (socket) {
-
+io.sockets.on("connection", function(socket) {
   // convenience function to log server messages on the client
   function log() {
-    var array = ['Message from server:'];
+    var array = ["Message from server:"];
     array.push.apply(array, arguments);
-    socket.emit('log', array);
+    socket.emit("log", array);
   }
 
-  socket.on('message', function (message) {
-    log('Client said: ', message);
+  socket.on("message", function(message, room) {
+    log("Client said: ", message);
     // for a real app, would be room-only (not broadcast)
-    socket.broadcast.emit('message', message);
+    console.log(room);
+    socket.to(room).broadcast.emit("message", message);
+
     // socket.to(sk.id).emit('message', message);
     // console.log(sk.id);
   });
 
-  socket.on('create or join', function (room) {
-    log('Received request to create or join room ' + room);
+  socket.on("create or join", function(room) {
+    log("Received request to create or join room " + room);
 
     var clientsInRoom = io.sockets.adapter.rooms[room];
-    var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
-    log('Room ' + room + ' now has ' + numClients + ' client(s)');
+    var numClients = clientsInRoom
+      ? Object.keys(clientsInRoom.sockets).length
+      : 0;
+    log("Room " + room + " now has " + numClients + " client(s)");
 
     if (numClients === 0) {
       socket.join(room);
-      log('Client ID ' + socket.id + ' created room ' + room);
-      socket.emit('created', room, socket.id);
-
+      log("Client ID " + socket.id + " created room " + room);
+      socket.emit("created", room, socket.id);
     } else if (numClients === 1) {
-      log('Client ID ' + socket.id + ' joined room ' + room);
-      io.sockets.in(room).emit('join', room);
+      log("Client ID " + socket.id + " joined room " + room);
+      io.sockets.in(room).emit("join", room);
       socket.join(room);
-      socket.emit('joined', room, socket.id);
-      io.sockets.in(room).emit('ready');
-    } else { // max two clients
-      socket.emit('full', room);
+      socket.emit("joined", room, socket.id);
+      io.sockets.in(room).emit("ready");
+    } else {
+      // max two clients
+      socket.emit("full", room);
     }
   });
 
-  socket.on('ipaddr', function () {
+  socket.on("ipaddr", function() {
     var ifaces = os.networkInterfaces();
     for (var dev in ifaces) {
-      ifaces[dev].forEach(function (details) {
-        if (details.family === 'IPv4' && details.address !== '127.0.0.1') {
-          socket.emit('ipaddr', details.address);
+      ifaces[dev].forEach(function(details) {
+        if (details.family === "IPv4" && details.address !== "127.0.0.1") {
+          socket.emit("ipaddr", details.address);
         }
       });
     }
   });
 
-  socket.on('bye', function () {
-    console.log('received bye');
+  socket.on("bye", function() {
+    console.log("received bye");
   });
-})
+});
 
 //////////////////////////////////////////////////////////////////
 
@@ -504,5 +511,3 @@ io.sockets.on('connection', function (socket) {
 //   require("./controllers/socket.js")(http);
 //   console.log(`Young's server listening on port 4000`);
 // })
-
-
