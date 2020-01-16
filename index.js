@@ -435,8 +435,7 @@ var h = https
         "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
       )
     },
-    app,
-    (req, res) => {
+    app, (req, res) => {
       fileServer.serve(req, res);
     }
   )
