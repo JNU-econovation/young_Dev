@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> <!-- 서영이가 임의로 넣어봤음. 필요없으면 없애도 됨-->
   <script src="https://apis.google.com/js/platform.js?onload=onload" async defer></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -33,7 +32,14 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
+  <!-- metronome -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+  <!-- <style>
+    #defaultCanvas0 {
+    }
+  </style> -->
 </head>
 
 <body>
@@ -86,7 +92,7 @@
     </div>
 
     <div class="container-fluid">
-      <div class="default-file-upload">
+      <div class="col-lg-12 default-file-upload">
         <h4>After lecture, playing video for feedback !</h4>
         <form action="/uploadFB?" enctype="multipart/form-data" method="POST">
           <input id="file-upload1" class="fill-upload" type="file" name='feedback' />
@@ -101,9 +107,86 @@
           </span>
         </form>
       </div>
+
+      <div class="checkbox">
+
+        <input id="trigger1" type="checkbox">
+        <label for="trigger1" class="checker"></label>
+
+        <input id="trigger2" type="checkbox">
+        <label for="trigger2" class="checker"></label>
+
+        <input id="trigger3" type="checkbox">
+        <label for="trigger3" class="checker"></label>
+
+        <input id="trigger4" type="checkbox">
+        <label for="trigger4" class="checker"></label>
+
+        <input id="trigger5" type="checkbox">
+        <label for="trigger5" class="checker"></label>
+
+        <input id="trigger6" type="checkbox">
+        <label for="trigger6" class="checker"></label>
+
+        <input id="trigger7" type="checkbox">
+        <label for="trigger7" class="checker"></label>
+
+        <input id="trigger8" type="checkbox">
+        <label for="trigger8" class="checker"></label>
+
+        <input id="trigger9" type="checkbox">
+        <label for="trigger9" class="checker"></label>
+
+        <input id="trigger10" type="checkbox">
+        <label for="trigger10" class="checker"></label>
+      </div>
+
+      <div class="container">
+        <h1>Metronome</h1>
+        <div class="row">
+          <div class="col-sm">
+            <div class="form-group">
+              <label for="tempo">Tempo</label>
+              <input id="tempo" class='form-control' type="number" value='60' min='20' max='180'
+                onChange="metronomeApp.setTempo(this.value);">
+            </div>
+            <div class="form-group">
+              <label for="metroSound">Sound</label>
+              <select id="metroSound" class="form-control" onChange="metronomeApp.setSound(this.selectedIndex + 1)">
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="visType">Visualization</label>
+              <select id="visType" class="form-control" onChange="metronomeApp.setVisualization(this.selectedIndex)">
+              </select>
+            </div>
+            <input id="metronome" class="form-control btn btn-secondary" type="button" value="Start"
+              onclick="metronomeApp.toggle()" />
+          </div>
+          <div id='visualization' class="col-sm">
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </section>
+  <!-- metronome script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="webapp/js/metronome-sound.js"></script>
+  <script src="webapp/js/visualization.js"></script>
+  <script src="webapp/js/app.js"></script>
+
 </body>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>

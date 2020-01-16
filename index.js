@@ -12,7 +12,7 @@ const app = express();
 
 
 // 리모트 테스트용
-const http = require("http");
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -372,6 +372,9 @@ app.get("/lecture-playing", (req, res) => {
   })
 });
 
+app.get("/metronome", (req, res) => {
+  res.render("metronome");
+})
 
 ////////////////////////////////////
 app.post('/uploadFB', upload.single('feedback'), (req, res) => {
@@ -419,19 +422,19 @@ app.get("/pureWebRTC", (req, res) => {
 });
 
 
-var h = http
+var h = https
   .createServer(
-    // {
-    //   key: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-    //   ),
-    //   cert: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   ),
-    //   ca: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   )
-    // },
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
     app, (req, res) => {
       fileServer.serve(req, res);
     }

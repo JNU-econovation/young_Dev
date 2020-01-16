@@ -215,3 +215,84 @@ strong {
 .btn {
   margin-bottom: 10px;
 }
+
+.default-file-upload {
+  text-align: center;
+  padding : 5rem;
+}
+
+#trigger1 {
+  display: none;
+}
+#trigger2 {
+  display: none;
+}
+#trigger3 {
+  display: none;
+}
+#trigger4 {
+  display: none;
+}
+#trigger5 {
+  display: none;
+}
+#trigger6 {
+  display: none;
+}
+#trigger7 {
+  display: none;
+}
+#trigger8 {
+  display: none;
+}
+#trigger9 {
+  display: none;
+}
+#trigger10 {
+  display: none;
+}
+
+.checker {
+  background-image: url(../images/p1.png);
+  background-position: left center;
+  background-size: auto 100%;
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+}
+
+.checkbox{
+  text-align: center;
+  padding-bottom: 3rem;
+}
+
+#trigger1:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger2:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger3:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger4:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger5:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger6:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger7:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger8:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger9:checked + .checker {
+  background-image: url(../images/p2.png);
+}
+#trigger10:checked + .checker {
+  background-image: url(../images/p2.png);
+}
