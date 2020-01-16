@@ -109,7 +109,7 @@ p {
 #testimonials {
   padding: 7% 5%;
   text-align: center;
-  background-color: #07315ea8;;
+  background-color: #fff;
   color: #000000;
 }
 
@@ -140,7 +140,6 @@ h2 {
 .carousel-item {
   padding: 3% 15%;
 }
-
 
 /* pricing Section */
 
@@ -195,4 +194,27 @@ h2 {
 
 .pb-2 {
   text-align: left;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 7%;
+  color: #fff;
+  text-align: center;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+  filter: invert(100%);
+}
+
+.item-contain {
+  padding: 0% 7%;
 }
