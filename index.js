@@ -11,7 +11,7 @@ const path = require("path");
 const app = express();
 
 // 리모트 테스트용
-const https = require("https");
+const http = require("http");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -39,10 +39,10 @@ app.set("view options", { layout: false });
 
 //////////////////////Multer////////////////////////////
 var _storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "public/uploads/");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
@@ -422,19 +422,19 @@ app.get("/pureWebRTC", (req, res) => {
   res.render("pureWebRTC");
 });
 
-var h = https
+var h = http
   .createServer(
-    {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      ),
-      ca: fs.readFileSync(
-        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-      )
-    },
+    // {
+    //   key: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+    //   ),
+    //   cert: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   ),
+    //   ca: fs.readFileSync(
+    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+    //   )
+    // },
     app, (req, res) => {
       fileServer.serve(req, res);
     }
@@ -445,7 +445,7 @@ var h = https
 
 var io = socketIO.listen(h);
 
-io.sockets.on("connection", function(socket) {
+io.sockets.on("connection", function (socket) {
   // convenience function to log server messages on the client
   function log() {
     var array = ["Message from server:"];
@@ -453,7 +453,7 @@ io.sockets.on("connection", function(socket) {
     socket.emit("log", array);
   }
 
-  socket.on("message", function(message, room) {
+  socket.on("message", function (message, room) {
     log("Client said: ", message);
     // for a real app, would be room-only (not broadcast)
     console.log(room);
@@ -463,7 +463,7 @@ io.sockets.on("connection", function(socket) {
     // console.log(sk.id);
   });
 
-  socket.on("create or join", function(room) {
+  socket.on("create or join", function (room) {
     log("Received request to create or join room " + room);
 
     var clientsInRoom = io.sockets.adapter.rooms[room];
@@ -488,10 +488,10 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
-  socket.on("ipaddr", function() {
+  socket.on("ipaddr", function () {
     var ifaces = os.networkInterfaces();
     for (var dev in ifaces) {
-      ifaces[dev].forEach(function(details) {
+      ifaces[dev].forEach(function (details) {
         if (details.family === "IPv4" && details.address !== "127.0.0.1") {
           socket.emit("ipaddr", details.address);
         }
@@ -499,7 +499,7 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
-  socket.on("bye", function() {
+  socket.on("bye", function () {
     console.log("received bye");
   });
 });
