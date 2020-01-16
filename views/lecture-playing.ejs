@@ -88,18 +88,31 @@
     <div class="container-fluid">
       <div class="default-file-upload">
         <h4>After lecture, playing video for feedback !</h4>
-        <input id="file-upload1" class="fill-upload" type="file" />
-        <span>
-          <div class="container" style="display: inline; margin-left: -100px;">
-            <div class="row" style="display: inline;">
-              <div class="col-md-12" style="display: inline;">
-                <button type="button" class="btn btn-labeled btn-dark">Submit</button>
+        <form action="/uploadFB?" enctype="multipart/form-data" method="POST">
+          <input id="file-upload1" class="fill-upload" type="file" name='feedback' />
+          <span>
+            <div class="container" style="display: inline; margin-left: -100px;">
+              <div class="row" style="display: inline;">
+                <div class="col-md-12" style="display: inline;">
+                  <button id="submit" type="submit" class="btn btn-labeled btn-dark">Submit</button>
+                </div>
               </div>
             </div>
-          </div>
-        </span>
+          </span>
+        </form>
       </div>
     </div>
 
   </section>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#submit").click(function () {
+      if ($("#file-upload1").val().length == 0) {
+        alert("파일을 첨부하지 않았습니다");
+        $("#file-upload1").focus(); return false;
+      }
+    })
+  })
+</script>
