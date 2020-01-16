@@ -39,14 +39,23 @@ app.set("view options", { layout: false });
 
 //////////////////////Multer////////////////////////////
 var _storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "public/uploads/");
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
-const upload = multer({ storage: _storage });
+const upload = multer({
+  storage: _storage,
+  fileFilter: function (req, file, cb) {
+    var ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.mp4' && '.ogg') {
+      return callback(new Error('Only images and videos are allowed'))
+    }
+    cb(null, true);
+  }
+});
 
 //////////////////////MySQL/////////////////////////////
 
@@ -296,18 +305,23 @@ app.get("/postingnew", (req, res) => {
   });
 });
 
-app.post("/upload", upload.array("file", 2), (req, res) => {
-  var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.file}');`;
-  console.log(req.body);
-  console.log(req.body.file);
-  console.log(req.files);
+app.post("/uploadCF", upload.single("file"), (req, res) => {
+  console.log("/uploadCF실행");
+  console.log("req.file:", req.file);
+  res.status(200).end();
+});
+
+app.post("/uploadPost", (req, res) => {
+  console.log(req.body.title);
+  console.log(req.body.description);
+  console.log(req.body.video_path);
+  const INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) values('${req.session.user_email}', '${req.body.title}', '${req.body.description}', '${req.body.video_path}');`;
   connection.query(INSERT_POST_QUERY, (err, result) => {
+    console.log(result);
     if (err) {
       res.send(err);
     } else {
-      res.statusCode = 302;
-      res.setHeader("Location", "/community");
-      res.end();
+      res.send(result).end();
     }
   });
 });
@@ -409,7 +423,6 @@ app.post("/uploadFB", upload.single("feedback"), (req, res) => {
     }
   });
 });
-////////////////////////////////////
 
 /////////////////////////WebRTC///////////////////////////////
 //예제코드에서 app 대신 h써보기
@@ -445,7 +458,7 @@ var h = https
 
 var io = socketIO.listen(h);
 
-io.sockets.on("connection", function(socket) {
+io.sockets.on("connection", function (socket) {
   // convenience function to log server messages on the client
   function log() {
     var array = ["Message from server:"];
@@ -453,7 +466,7 @@ io.sockets.on("connection", function(socket) {
     socket.emit("log", array);
   }
 
-  socket.on("message", function(message, room) {
+  socket.on("message", function (message, room) {
     log("Client said: ", message);
     // for a real app, would be room-only (not broadcast)
     console.log(room);
@@ -463,7 +476,7 @@ io.sockets.on("connection", function(socket) {
     // console.log(sk.id);
   });
 
-  socket.on("create or join", function(room) {
+  socket.on("create or join", function (room) {
     log("Received request to create or join room " + room);
 
     var clientsInRoom = io.sockets.adapter.rooms[room];
@@ -488,10 +501,10 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
-  socket.on("ipaddr", function() {
+  socket.on("ipaddr", function () {
     var ifaces = os.networkInterfaces();
     for (var dev in ifaces) {
-      ifaces[dev].forEach(function(details) {
+      ifaces[dev].forEach(function (details) {
         if (details.family === "IPv4" && details.address !== "127.0.0.1") {
           socket.emit("ipaddr", details.address);
         }
@@ -499,7 +512,7 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
-  socket.on("bye", function() {
+  socket.on("bye", function () {
     console.log("received bye");
   });
 });

@@ -109,13 +109,16 @@
         <!-- Preview Image -->
         <!-- <img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""> -->
         <% if(post[0].video_path.length!=0) { %>
+        <%if(post[0].video_path.endsWith('.png')||post[0].video_path.endsWith('.jpg')||post[0].video_path.endsWith('.jpeg')){%>
+        <img src="<%=post[0].video_path%>">
+        <% } else if (post[0].video_path.endsWith('.mp4')||post[0].video_path.endsWith('.ogg')){ %>
         <div class="img-fluid rounded" src="http://placehold.it/900x300>
-            <video width=" 700" height="500" controls style="margin-bottom: 50px;" autoplay preload="auto">
+              <video width=" 700" height="500" controls style="margin-bottom: 50px;" autoplay preload="auto">
           <source src="<%= post[0].video_path %>" type="video/mp4">
           <source src="<%= post[0].video_path %>" type="video/ogg">
-          Your browser does not support the video tag.
           </video>
         </div>
+        <% } %>
         <% } %>
 
         <hr>
