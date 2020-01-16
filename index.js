@@ -18,19 +18,6 @@ app.use(
   express.static("./views/examples/conference")
 );
 
-<<<<<<< HEAD
-=======
-// Routes ======================================================================
-// require("./controllers/route.js")(app);
-app.get("/webRTC", (req, res) => {
-  res.render("examples/conference/webRTC.ejs", {
-    title: "Streaming Lesson"
-  });
-});
-
-////////////////////////////
-
->>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -52,8 +39,8 @@ app.set("view options", { layout: false });
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "young",
-  password: "pianotutoring",
+  user: "root",
+  password: "sjdlssj102030",
   database: "piano_tutoring"
 });
 
@@ -353,7 +340,7 @@ app.get("/lecture-playing", (req, res) => {
         lecture: result
       });
     }
-  })
+  });
 });
 
 app.get("/lectures/add", (req, res) => {
@@ -392,23 +379,6 @@ app.get("/pureWebRTC", (req, res) => {
   res.render("pureWebRTC");
 });
 
-<<<<<<< HEAD
-
-var h = http
-  .createServer(
-    // {
-    //   key: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-    //   ),
-    //   cert: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   ),
-    //   ca: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   )
-    // },
-    app, (req, res) => {
-=======
 var h = https
   .createServer(
     {
@@ -424,7 +394,6 @@ var h = https
     },
     app,
     (req, res) => {
->>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
       fileServer.serve(req, res);
     }
   )
@@ -442,17 +411,12 @@ io.sockets.on("connection", function(socket) {
     socket.emit("log", array);
   }
 
-  socket.on('message', function (message, room) {
-    log('Client said: ', message);
+  socket.on("message", function(message, room) {
+    log("Client said: ", message);
     // for a real app, would be room-only (not broadcast)
-<<<<<<< HEAD
-    console.log("room:", room);
-    socket.broadcast.emit('message', message);
-=======
     console.log(room);
-    socket.to(room).broadcast.emit('message', message);
+    socket.to(room).broadcast.emit("message", message);
 
->>>>>>> 2c5f66025e7c9879b7e3c75370f8d317bcba1470
     // socket.to(sk.id).emit('message', message);
     // console.log(sk.id);
   });
