@@ -34,15 +34,14 @@
     function upload() {
       var title_value = document.querySelector("#post_title").value;
       var description_value = document.querySelector("#description").value;
-      var path_value = document.querySelector("#file-upload1").value;
-
+      var path_value = "files/" + document.querySelector("#file-upload1").files[0].name;
       if (!title_value) {
         alert("제목을 입력하세요");
       } else if (!description_value) {
         alert("내용을 입력하세요");
       } else {
         axios
-          .post("/upload", {
+          .post("/uploadPost", {
             title: title_value,
             description: description_value,
             video_path: path_value
@@ -96,32 +95,28 @@
 
           <h1>Create post</h1>
 
-          <form action="/upload" method="POST">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input id="post_title" type="text" class="form-control" name="title" />
+          </div>
 
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input id="post_title" type="text" class="form-control" name="title" />
-            </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" rows="5" class="form-control" name="description"></textarea>
+          </div>
 
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea id="description" rows="5" class="form-control" name="description"></textarea>
-            </div>
-
-            <input id="file-upload1" class="fill-upload" type="file" name="file" />
-            <img id="LoadImg">
-
-            <span>
-              <div class="container" style="display: inline; margin-left: -100px;">
-                <div class="row" style="display: inline;">
-                  <div class="col-md-12" style="display: inline;">
-                    <button type="submit" class="btn btn-labeled btn-dark">Submit</button>
-                  </div>
+          <input id="file-upload1" class="fill-upload" type="file" name="file" />
+          <img id="LoadImg">
+          <span>
+            <div class="container" style="display: inline; margin-left: -100px;">
+              <div class="row" style="display: inline;">
+                <div class="col-md-12" style="display: inline;">
+                  <button type="botton" class="btn btn-labeled btn-dark" onclick="submitFile()">Submit</button>
                 </div>
               </div>
-            </span>
+            </div>
+          </span>
 
-          </form>
 
         </div>
 
@@ -137,7 +132,45 @@
     <p>© Copyright 2020 pianotutoring</p>
   </footer>
 
-
 </body>
+<script>
+  function submitFile() {
+    var f = document.querySelector("#file-upload1").files[0];
+    let data = new FormData();
+    data.append('file', f, f.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    axios
+      .post("/uploadCF", data, config)
+      .then(function (result) {
+        if (result.status === 200) upload();
+      })
+      .catch(function (error) {
+        alert(error.message);
+      });
+  }
+
+  // function upload() {
+  //   var title_value = document.querySelector("#post_title").value;
+  //   var description_value = document.querySelector("#description").value;
+  //   var path_value = document.querySelector("#file-upload1").files[0].name;
+  //   if (!title_value) {
+  //     alert("제목을 입력하세요");
+  //   } else if (!description_value) {
+  //     alert("내용을 입력하세요");
+  //   } else {
+  //     axios
+  //       .post("/uploadPost", {
+  //         title: title_value,
+  //         description: description_value,
+  //         video_path: `'uploads/${path_value}'`
+  //       }).then(function (result) {
+  //         if (result.status === 200) window.location.href = "/community";
+  //       })
+  //       .catch(function (error) {
+  //         alert(error.message);
+  //       })
+  //   }
+  // }
+</script>
 
 </html>

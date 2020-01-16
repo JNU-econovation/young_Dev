@@ -11,7 +11,7 @@ const path = require("path");
 const app = express();
 
 // 리모트 테스트용
-const http = require("http");
+const https = require("https");
 app.use("/contents", express.static("./contents"));
 app.use(
   "/views/examples/conference",
@@ -40,13 +40,22 @@ app.set("view options", { layout: false });
 //////////////////////Multer////////////////////////////
 var _storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/uploads/");
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
-const upload = multer({ storage: _storage });
+const upload = multer({
+  storage: _storage,
+  fileFilter: function (req, file, cb) {
+    var ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.mp4' && '.ogg') {
+      return callback(new Error('Only images and videos are allowed'))
+    }
+    cb(null, true);
+  }
+});
 
 //////////////////////MySQL/////////////////////////////
 
@@ -296,18 +305,23 @@ app.get("/postingnew", (req, res) => {
   });
 });
 
-app.post("/upload", upload.array("file", 2), (req, res) => {
-  var INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) VALUES ('${req.session.user_email}','${req.body.title}','${req.body.description}','${req.body.file}');`;
-  console.log(req.body);
-  console.log(req.body.file);
-  console.log(req.files);
+app.post("/uploadCF", upload.single("file"), (req, res) => {
+  console.log("/uploadCF실행");
+  console.log("req.file:", req.file);
+  res.status(200).end();
+});
+
+app.post("/uploadPost", (req, res) => {
+  console.log(req.body.title);
+  console.log(req.body.description);
+  console.log(req.body.video_path);
+  const INSERT_POST_QUERY = `INSERT INTO posting (user_email, title, description, video_path) values('${req.session.user_email}', '${req.body.title}', '${req.body.description}', '${req.body.video_path}');`;
   connection.query(INSERT_POST_QUERY, (err, result) => {
+    console.log(result);
     if (err) {
       res.send(err);
     } else {
-      res.statusCode = 302;
-      res.setHeader("Location", "/community");
-      res.end();
+      res.send(result).end();
     }
   });
 });
@@ -409,7 +423,6 @@ app.post("/uploadFB", upload.single("feedback"), (req, res) => {
     }
   });
 });
-////////////////////////////////////
 
 /////////////////////////WebRTC///////////////////////////////
 //예제코드에서 app 대신 h써보기
@@ -422,19 +435,19 @@ app.get("/pureWebRTC", (req, res) => {
   res.render("pureWebRTC");
 });
 
-var h = http
+var h = https
   .createServer(
-    // {
-    //   key: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
-    //   ),
-    //   cert: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   ),
-    //   ca: fs.readFileSync(
-    //     "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
-    //   )
-    // },
+    {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      ),
+      ca: fs.readFileSync(
+        "/etc/letsencrypt/live/pianotutoring.econovation.kr/fullchain.pem"
+      )
+    },
     app, (req, res) => {
       fileServer.serve(req, res);
     }
