@@ -74,7 +74,7 @@ connection.connect(err => {
   }
 });
 app.use(express.static("public"));
-app.use("/files", express.static("uploads"));
+// app.use("/files", express.static("uploads"));
 app.use(cors());
 
 /////////////////////////index///////////////////////////////
