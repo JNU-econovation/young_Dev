@@ -1,5 +1,5 @@
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 const mysql = require("mysql");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
@@ -75,7 +75,7 @@ connection.connect(err => {
 });
 app.use(express.static("public"));
 // app.use("/files", express.static("uploads"));
-// app.use(cors());
+app.use(cors());
 
 /////////////////////////index///////////////////////////////
 
